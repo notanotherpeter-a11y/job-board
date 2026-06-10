@@ -993,6 +993,72 @@ function toggleApplied(job) {
   saveApplied(job);
 }
 
+// ── Send CV Modal ──
+let currentJob = null;
+
+function openModal(job) {
+  currentJob = job;
+  const label = job.category === "board"
+    ? "Sending from genecarloai@gmail.com"
+    : `Applying for: ${job.role} at ${job.company}`;
+  document.getElementById("modal-job-label").textContent = label;
+  document.getElementById("modal-to").value = "";
+  document.getElementById("modal-msg").value = "";
+  document.getElementById("modal-status").textContent = "";
+  document.getElementById("modal-status").className = "modal-status";
+  document.getElementById("send-modal").classList.add("open");
+  setTimeout(() => document.getElementById("modal-to").focus(), 100);
+}
+
+function closeModal() {
+  document.getElementById("send-modal").classList.remove("open");
+  currentJob = null;
+}
+
+async function sendCV() {
+  const to  = document.getElementById("modal-to").value.trim();
+  const msg = document.getElementById("modal-msg").value.trim();
+  const btn = document.getElementById("modal-send-btn");
+  const status = document.getElementById("modal-status");
+
+  if (!to) { status.textContent = "Please enter a recipient email."; status.className = "modal-status err"; return; }
+
+  btn.disabled = true;
+  btn.textContent = "Sending…";
+  status.textContent = "";
+  status.className = "modal-status";
+
+  try {
+    const res = await fetch("/api/send-cv", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        to,
+        company: currentJob?.company || "",
+        role: currentJob?.role || "",
+        message: msg,
+      }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || "Send failed");
+    status.textContent = "✓ Sent successfully!";
+    status.className = "modal-status ok";
+    if (currentJob) { applied.add(currentJob.id); saveApplied(currentJob); render(); }
+    setTimeout(closeModal, 1800);
+  } catch (err) {
+    status.textContent = "✗ " + err.message;
+    status.className = "modal-status err";
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "Send";
+  }
+}
+
+// Close modal on overlay click
+document.getElementById("send-modal").addEventListener("click", e => {
+  if (e.target === document.getElementById("send-modal")) closeModal();
+});
+
 // Category filter tabs
 document.querySelectorAll("#cat-tabs .filter-tab").forEach(tab => {
   tab.addEventListener("click", () => {
