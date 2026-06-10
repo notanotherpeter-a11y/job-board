@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kristian's Job Board</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f0f2f7;
+      --card: #ffffff;
+      --text: #1a1d2e;
+      --text-muted: #6b7280;
+      --accent: #c0392b;
+      --accent-light: #fdf2f1;
+      --blue: #2563eb;
+      --blue-light: #eff6ff;
+      --green: #16a34a;
+      --green-light: #f0fdf4;
+      --border: #e5e7eb;
+      --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+      --shadow-hover: 0 4px 16px rgba(0,0,0,0.10), 0 2px 6px rgba(0,0,0,0.06);
+      --radius: 12px;
+      --radius-sm: 8px;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ── Header ── */
+    header {
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .header-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      height: 64px;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+    .logo-icon {
+      width: 36px;
+      height: 36px;
+      background: var(--accent);
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+    }
+    .logo-icon svg { width: 18px; height: 18px; stroke: #fff; stroke-width: 2.5; }
+    .logo-text {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.3px;
+    }
+    .logo-text span { color: var(--accent); }
+
+    /* ── Stats Bar ── */
+    .stats-section {
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
+    }
+    .stats-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 16px 24px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+    .stat-card {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 16px;
+      background: var(--bg);
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+    }
+    .stat-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .stat-icon svg { width: 16px; height: 16px; }
+    .stat-icon.total { background: #f3f4f6; }
+    .stat-icon.total svg { stroke: #374151; }
+    .stat-icon.ai { background: var(--accent-light); }
+    .stat-icon.ai svg { stroke: var(--accent); }
+    .stat-icon.social { background: var(--blue-light); }
+    .stat-icon.social svg { stroke: var(--blue); }
+    .stat-icon.applied { background: var(--green-light); }
+    .stat-icon.applied svg { stroke: var(--green); }
+    .stat-info { display: flex; flex-direction: column; }
+    .stat-number { font-size: 22px; font-weight: 800; color: var(--text); line-height: 1; }
+    .stat-label { font-size: 12px; color: var(--text-muted); font-weight: 500; margin-top: 2px; }
+
+    /* ── Controls ── */
+    .controls-section {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px 24px 0;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .search-wrap {
+      flex: 1;
+      min-width: 220px;
+      position: relative;
+    }
+    .search-wrap svg {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 16px;
+      height: 16px;
+      stroke: var(--text-muted);
+    }
+    .search-input {
+      width: 100%;
+      padding: 10px 12px 10px 38px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: var(--card);
+      font-family: inherit;
+      font-size: 14px;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    .search-input:focus { border-color: var(--accent); }
+    .search-input::placeholder { color: #9ca3af; }
+
+    .filter-tabs {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .filter-tab {
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+      border: 1.5px solid var(--border);
+      background: var(--card);
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+    .filter-tab:hover { border-color: var(--accent); color: var(--accent); }
+    .filter-tab.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .filter-tab.active-applied { background: var(--green); border-color: var(--green); color: #fff; }
+
+    /* ── Grid ── */
+    .grid-section {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px 24px 40px;
+    }
+    .results-info {
+      font-size: 13px;
+      color: var(--text-muted);
+      font-weight: 500;
+      margin-bottom: 16px;
+    }
+    .job-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 16px;
+    }
+
+    /* ── Job Card ── */
+    .job-card {
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      box-shadow: var(--shadow);
+      transition: box-shadow 0.2s, border-color 0.2s, transform 0.15s;
+      position: relative;
+      overflow: hidden;
+    }
+    .job-card:hover { box-shadow: var(--shadow-hover); transform: translateY(-2px); }
+    .job-card.applied {
+      border-color: #bbf7d0;
+      background: linear-gradient(135deg, #fff 0%, #f0fdf4 100%);
+    }
+    .job-card.applied::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 4px; height: 100%;
+      background: var(--green);
+      border-radius: 4px 0 0 4px;
+    }
+    .card-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .company-avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 800;
+      flex-shrink: 0;
+      letter-spacing: -0.5px;
+    }
+    .card-header-info { flex: 1; min-width: 0; }
+    .company-name {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .role-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.3;
+    }
+    .card-badges {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .badge {
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.2px;
+    }
+    .badge-location {
+      background: #f3f4f6;
+      color: #374151;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .badge-location svg { width: 10px; height: 10px; stroke: #6b7280; }
+    .badge-cat-ai { background: var(--accent-light); color: var(--accent); }
+    .badge-cat-social { background: var(--blue-light); color: var(--blue); }
+    .badge-cat-board { background: var(--green-light); color: var(--green); }
+
+    .card-notes {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .card-notes svg { width: 13px; height: 13px; stroke: var(--text-muted); flex-shrink: 0; }
+
+    .card-footer {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-top: auto;
+      padding-top: 2px;
+      border-top: 1px solid #f3f4f6;
+    }
+    .card-date {
+      font-size: 11px;
+      color: #9ca3af;
+      font-weight: 500;
+      flex: 1;
+    }
+    .btn {
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s;
+      font-family: inherit;
+      white-space: nowrap;
+    }
+    .btn svg { width: 13px; height: 13px; }
+    .btn-apply {
+      background: var(--accent);
+      color: #fff;
+    }
+    .btn-apply:hover { background: #a93226; }
+    .btn-apply svg { stroke: #fff; }
+    .btn-mark {
+      background: #f3f4f6;
+      color: var(--text-muted);
+      border: 1.5px solid var(--border);
+    }
+    .btn-mark:hover { background: var(--green-light); color: var(--green); border-color: #bbf7d0; }
+    .btn-mark svg { stroke: currentColor; }
+    .btn-mark.marked {
+      background: var(--green-light);
+      color: var(--green);
+      border-color: #bbf7d0;
+    }
+
+    .applied-badge {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      background: var(--green);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 20px;
+      display: none;
+      align-items: center;
+      gap: 4px;
+      letter-spacing: 0.3px;
+    }
+    .applied-badge svg { width: 10px; height: 10px; stroke: #fff; }
+    .job-card.applied .applied-badge { display: flex; }
+
+    /* ── Empty State ── */
+    .empty-state {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--text-muted);
+    }
+    .empty-state svg { width: 40px; height: 40px; stroke: #d1d5db; margin-bottom: 12px; }
+    .empty-state p { font-size: 15px; font-weight: 600; }
+    .empty-state span { font-size: 13px; }
+
+    /* ── Responsive ── */
+    @media (max-width: 700px) {
+      .stats-inner { grid-template-columns: repeat(2, 1fr); }
+      .job-grid { grid-template-columns: 1fr; }
+      .header-inner { gap: 10px; }
+      .controls-section { gap: 10px; }
+      .filter-tabs { gap: 5px; }
+      .filter-tab { padding: 7px 12px; font-size: 12px; }
+    }
+    @media (max-width: 420px) {
+      .stats-inner { grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 12px 16px; }
+      .controls-section { padding: 16px 16px 0; }
+      .grid-section { padding: 16px 16px 32px; }
+      header { padding: 0 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<header>
+  <div class="header-inner">
+    <div class="logo">
+      <div class="logo-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+      </div>
+      <span class="logo-text">Kristian's <span>Job Board</span></span>
+    </div>
+  </div>
+</header>
+
+<!-- Stats Bar -->
+<div class="stats-section">
+  <div class="stats-inner">
+    <div class="stat-card">
+      <div class="stat-icon total">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+      </div>
+      <div class="stat-info">
+        <span class="stat-number" id="stat-total">0</span>
+        <span class="stat-label">Total Jobs</span>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon ai">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+      </div>
+      <div class="stat-info">
+        <span class="stat-number" id="stat-ai">0</span>
+        <span class="stat-label">AI / Dev</span>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon social">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      </div>
+      <div class="stat-info">
+        <span class="stat-number" id="stat-social">0</span>
+        <span class="stat-label">Social / VA</span>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon applied">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div class="stat-info">
+        <span class="stat-number" id="stat-applied">0</span>
+        <span class="stat-label">Applied</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Controls -->
+<div class="controls-section">
+  <div class="search-wrap">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input class="search-input" type="text" id="search" placeholder="Search roles or companies…" />
+  </div>
+  <div class="filter-tabs">
+    <button class="filter-tab active" data-filter="all">All</button>
+    <button class="filter-tab" data-filter="ai">AI / Dev</button>
+    <button class="filter-tab" data-filter="social">Social / VA</button>
+    <button class="filter-tab" data-filter="board">Job Boards</button>
+    <button class="filter-tab" data-filter="applied">Applied</button>
+  </div>
+</div>
+
+<!-- Grid -->
+<div class="grid-section">
+  <p class="results-info" id="results-info"></p>
+  <div class="job-grid" id="job-grid"></div>
+</div>
+
+<script>
+const JOBS = [
+  {
+    id: 1,
+    company: "NUAI",
+    role: "AI Research Scientist & Engineer",
+    location: "Melbourne / Sydney / Remote",
+    category: "ai",
+    notes: null,
+    url: "https://wellfound.com/jobs/1861609-ai-research-scientist-engineer",
+    initials: "NU",
+    avatarBg: "#fde8e6",
+    avatarColor: "#c0392b",
+  },
+  {
+    id: 2,
+    company: "Various Startups",
+    role: "Associate AI Engineer",
+    location: "Melbourne Remote",
+    category: "ai",
+    notes: "$87K – $105K AUD",
+    url: "https://wellfound.com/role/l/ai-engineer/melbourne",
+    initials: "VS",
+    avatarBg: "#fde8e6",
+    avatarColor: "#c0392b",
+  },
+  {
+    id: 3,
+    company: "Startup",
+    role: "AI-Native Full-Stack Engineer",
+    location: "Remote",
+    category: "ai",
+    notes: null,
+    url: "https://wellfound.com/jobs/4157851-passionate-ai-native-full-stack-middleware-engineer",
+    initials: "ST",
+    avatarBg: "#fde8e6",
+    avatarColor: "#c0392b",
+  },
+  {
+    id: 4,
+    company: "Multiple",
+    role: "Remote AI Engineer",
+    location: "Remote",
+    category: "ai",
+    notes: "130K+ listings",
+    url: "https://wellfound.com/role/r/ai-engineer",
+    initials: "ML",
+    avatarBg: "#fde8e6",
+    avatarColor: "#c0392b",
+  },
+  {
+    id: 5,
+    company: "Multiple",
+    role: "Remote Full Stack Engineer",
+    location: "Remote",
+    category: "ai",
+    notes: null,
+    url: "https://wellfound.com/role/r/full-stack-engineer",
+    initials: "ML",
+    avatarBg: "#fde8e6",
+    avatarColor: "#c0392b",
+  },
+  {
+    id: 6,
+    company: "Upwork Client",
+    role: "AI Agent Developer — Social Media Automation",
+    location: "Freelance Remote",
+    category: "ai",
+    notes: "Lead management automation",
+    url: "https://www.upwork.com/freelance-jobs/apply/Agent-Developer-Needed-Social-Media-Automation-Lead-Management_~022003072440250569177/",
+    initials: "UP",
+    avatarBg: "#fde8e6",
+    avatarColor: "#c0392b",
+  },
+  {
+    id: 7,
+    company: "Virtual Coworker",
+    role: "Social Media VA — Digital Marketing Agency AU",
+    location: "Part-time Melbourne",
+    category: "social",
+    notes: "Home-based, part-time",
+    url: "https://revopscareers.com/job/virtual-coworker-social-media-virtual-assistant-for-a-digital-marketing-agency-in-australia-home-based-part-time-melbourne-victoria-australia/",
+    initials: "VC",
+    avatarBg: "#eff6ff",
+    avatarColor: "#2563eb",
+  },
+  {
+    id: 8,
+    company: "Virtual Vocations",
+    role: "Remote Social Media Assistant",
+    location: "Remote",
+    category: "social",
+    notes: null,
+    url: "https://www.virtualvocations.com/q-remote-social-media-assistant-jobs.html",
+    initials: "VV",
+    avatarBg: "#eff6ff",
+    avatarColor: "#2563eb",
+  },
+  {
+    id: 9,
+    company: "Airtasker Melbourne",
+    role: "Freelance VA Tasks",
+    location: "Local Melbourne",
+    category: "social",
+    notes: "Local gigs",
+    url: "https://www.airtasker.com/au/jobs/virtual-assistant/melbourne/",
+    initials: "AT",
+    avatarBg: "#eff6ff",
+    avatarColor: "#2563eb",
+  },
+  {
+    id: 10,
+    company: "Freelancer.com",
+    role: "Freelance VA Projects",
+    location: "Remote",
+    category: "social",
+    notes: null,
+    url: "https://www.freelancer.com/jobs/virtual-assistant/",
+    initials: "FL",
+    avatarBg: "#eff6ff",
+    avatarColor: "#2563eb",
+  },
+  {
+    id: 11,
+    company: "Wellfound",
+    role: "Melbourne Startups Board",
+    location: "Melbourne",
+    category: "board",
+    notes: "Direct to founders",
+    url: "https://wellfound.com/location/melbourne",
+    initials: "WF",
+    avatarBg: "#f0fdf4",
+    avatarColor: "#16a34a",
+  },
+  {
+    id: 12,
+    company: "DailyRemote",
+    role: "Australia Remote Jobs",
+    location: "Australia",
+    category: "board",
+    notes: "Curated remote roles",
+    url: "https://dailyremote.com/remote-jobs-in-australia",
+    initials: "DR",
+    avatarBg: "#f0fdf4",
+    avatarColor: "#16a34a",
+  },
+  {
+    id: 13,
+    company: "Remote Rocketship",
+    role: "Melbourne Remote Listings",
+    location: "Melbourne",
+    category: "board",
+    notes: "Direct company links",
+    url: "https://www.remoterocketship.com/city/melbourne/",
+    initials: "RR",
+    avatarBg: "#f0fdf4",
+    avatarColor: "#16a34a",
+  },
+  {
+    id: 14,
+    company: "Built In Melbourne",
+    role: "Remote Tech Company Jobs",
+    location: "Remote",
+    category: "board",
+    notes: "Tech companies",
+    url: "https://builtinmelbourne.com/jobs/remote",
+    initials: "BM",
+    avatarBg: "#f0fdf4",
+    avatarColor: "#16a34a",
+  },
+  {
+    id: 15,
+    company: "Upwork",
+    role: "AU Freelance Hub",
+    location: "Remote",
+    category: "board",
+    notes: "Freelance direct",
+    url: "https://www.upwork.com/freelance-jobs/australia/",
+    initials: "UW",
+    avatarBg: "#f0fdf4",
+    avatarColor: "#16a34a",
+  },
+];
+
+const CAT_LABELS = { ai: "AI / Dev", social: "Social / VA", board: "Job Board" };
+const CAT_BADGE  = { ai: "badge-cat-ai", social: "badge-cat-social", board: "badge-cat-board" };
+
+// Load applied state from localStorage
+let applied = new Set(JSON.parse(localStorage.getItem("kr_applied") || "[]"));
+
+function saveApplied() {
+  localStorage.setItem("kr_applied", JSON.stringify([...applied]));
+}
+
+function updateStats(visible) {
+  const totalEl   = document.getElementById("stat-total");
+  const aiEl      = document.getElementById("stat-ai");
+  const socialEl  = document.getElementById("stat-social");
+  const appliedEl = document.getElementById("stat-applied");
+
+  // Count from ALL jobs (not filtered), except total shows visible count
+  totalEl.textContent   = JOBS.length;
+  aiEl.textContent      = JOBS.filter(j => j.category === "ai").length;
+  socialEl.textContent  = JOBS.filter(j => j.category === "social").length;
+  appliedEl.textContent = applied.size;
+}
+
+function buildCard(job) {
+  const isApplied = applied.has(job.id);
+  const card = document.createElement("div");
+  card.className = "job-card" + (isApplied ? " applied" : "");
+  card.dataset.id = job.id;
+
+  card.innerHTML = `
+    <div class="applied-badge">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      Applied
+    </div>
+    <div class="card-header">
+      <div class="company-avatar" style="background:${job.avatarBg};color:${job.avatarColor};">${job.initials}</div>
+      <div class="card-header-info">
+        <div class="company-name">${job.company}</div>
+        <div class="role-title">${job.role}</div>
+      </div>
+    </div>
+    <div class="card-badges">
+      <span class="badge badge-location">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        ${job.location}
+      </span>
+      <span class="badge ${CAT_BADGE[job.category]}">${CAT_LABELS[job.category]}</span>
+    </div>
+    ${job.notes ? `<div class="card-notes"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>${job.notes}</div>` : ""}
+    <div class="card-footer">
+      <span class="card-date">Added Jun 2026</span>
+      <button class="btn btn-mark ${isApplied ? "marked" : ""}" data-id="${job.id}">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        ${isApplied ? "Applied" : "Mark Applied"}
+      </button>
+      <a href="${job.url}" target="_blank" rel="noopener noreferrer" class="btn btn-apply">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        Apply
+      </a>
+    </div>
+  `;
+
+  card.querySelector(".btn-mark").addEventListener("click", () => toggleApplied(job.id));
+  return card;
+}
+
+function render() {
+  const query   = document.getElementById("search").value.trim().toLowerCase();
+  const activeTab = document.querySelector(".filter-tab.active, .filter-tab.active-applied");
+  const filter  = activeTab ? activeTab.dataset.filter : "all";
+
+  const filtered = JOBS.filter(job => {
+    const matchSearch = !query
+      || job.role.toLowerCase().includes(query)
+      || job.company.toLowerCase().includes(query)
+      || job.location.toLowerCase().includes(query);
+    const matchFilter =
+      filter === "all" ? true :
+      filter === "applied" ? applied.has(job.id) :
+      job.category === filter;
+    return matchSearch && matchFilter;
+  });
+
+  const grid = document.getElementById("job-grid");
+  grid.innerHTML = "";
+
+  if (filtered.length === 0) {
+    const empty = document.createElement("div");
+    empty.className = "empty-state";
+    empty.innerHTML = `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <p>No jobs found</p>
+      <span>Try adjusting your search or filters</span>
+    `;
+    grid.appendChild(empty);
+  } else {
+    filtered.forEach(job => grid.appendChild(buildCard(job)));
+  }
+
+  const info = document.getElementById("results-info");
+  info.textContent = `Showing ${filtered.length} of ${JOBS.length} listings`;
+
+  updateStats(filtered);
+}
+
+function toggleApplied(id) {
+  if (applied.has(id)) {
+    applied.delete(id);
+  } else {
+    applied.add(id);
+  }
+  saveApplied();
+  render();
+}
+
+// Filter tabs
+document.querySelectorAll(".filter-tab").forEach(tab => {
+  tab.addEventListener("click", () => {
+    document.querySelectorAll(".filter-tab").forEach(t => {
+      t.classList.remove("active", "active-applied");
+    });
+    if (tab.dataset.filter === "applied") {
+      tab.classList.add("active-applied");
+    } else {
+      tab.classList.add("active");
+    }
+    render();
+  });
+});
+
+// Search
+document.getElementById("search").addEventListener("input", render);
+
+// Init
+render();
+</script>
+</body>
+</html>
