@@ -410,6 +410,15 @@
     .btn-send-cv { background: #ede9fe; color: #7c3aed; border: 1.5px solid #ddd6fe; }
     .btn-send-cv:hover { background: #ddd6fe; }
     .btn-send-cv svg { stroke: #7c3aed; }
+    .btn-send-cv.no-email { background: #f3f4f6; color: #9ca3af; border-color: #e5e7eb; }
+    .btn-send-cv.no-email svg { stroke: #9ca3af; }
+    .email-dot {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 10px; font-weight: 700; padding: 2px 8px;
+      border-radius: 20px;
+    }
+    .email-dot.ready { background: #f0fdf4; color: #16a34a; }
+    .email-dot.needed { background: #fef9c3; color: #92400e; }
 
     /* ── Empty State ── */
     .empty-state {
@@ -646,7 +655,8 @@ const JOBS = [
     location: "Melbourne / Sydney / Remote",
     category: "ai",
     type: "fulltime",
-    notes: null,
+    email: null,
+    notes: "Add email to apply directly",
     url: "https://wellfound.com/jobs/1861609-ai-research-scientist-engineer",
     initials: "NU",
     avatarBg: "#fde8e6",
@@ -659,6 +669,7 @@ const JOBS = [
     location: "Melbourne Remote",
     category: "ai",
     type: "fulltime",
+    email: null,
     notes: "$87K – $105K AUD",
     url: "https://wellfound.com/role/l/ai-engineer/melbourne",
     initials: "VS",
@@ -672,7 +683,8 @@ const JOBS = [
     location: "Remote",
     category: "ai",
     type: "fulltime",
-    notes: null,
+    email: null,
+    notes: "Add email to apply directly",
     url: "https://wellfound.com/jobs/4157851-passionate-ai-native-full-stack-middleware-engineer",
     initials: "ST",
     avatarBg: "#fde8e6",
@@ -685,7 +697,8 @@ const JOBS = [
     location: "Remote",
     category: "ai",
     type: "fulltime",
-    notes: "130K+ listings",
+    email: null,
+    notes: "130K+ listings — find direct email",
     url: "https://wellfound.com/role/r/ai-engineer",
     initials: "ML",
     avatarBg: "#fde8e6",
@@ -698,7 +711,8 @@ const JOBS = [
     location: "Remote",
     category: "ai",
     type: "fulltime",
-    notes: null,
+    email: null,
+    notes: "Find direct email to apply",
     url: "https://wellfound.com/role/r/full-stack-engineer",
     initials: "ML",
     avatarBg: "#fde8e6",
@@ -711,6 +725,7 @@ const JOBS = [
     location: "Freelance Remote",
     category: "ai",
     type: "freelance",
+    email: null,
     notes: "Lead management automation",
     url: "https://www.upwork.com/freelance-jobs/apply/Agent-Developer-Needed-Social-Media-Automation-Lead-Management_~022003072440250569177/",
     initials: "UP",
@@ -724,6 +739,7 @@ const JOBS = [
     location: "Part-time Melbourne",
     category: "social",
     type: "parttime",
+    email: "apply@virtualcoworker.com",
     notes: "Home-based, part-time",
     url: "https://revopscareers.com/job/virtual-coworker-social-media-virtual-assistant-for-a-digital-marketing-agency-in-australia-home-based-part-time-melbourne-victoria-australia/",
     initials: "VC",
@@ -737,7 +753,8 @@ const JOBS = [
     location: "Remote",
     category: "social",
     type: "fulltime",
-    notes: null,
+    email: null,
+    notes: "Find direct email to apply",
     url: "https://www.virtualvocations.com/q-remote-social-media-assistant-jobs.html",
     initials: "VV",
     avatarBg: "#eff6ff",
@@ -750,7 +767,8 @@ const JOBS = [
     location: "Local Melbourne",
     category: "social",
     type: "freelance",
-    notes: "Local gigs",
+    email: null,
+    notes: "Local gigs — platform only",
     url: "https://www.airtasker.com/au/jobs/virtual-assistant/melbourne/",
     initials: "AT",
     avatarBg: "#eff6ff",
@@ -763,7 +781,8 @@ const JOBS = [
     location: "Remote",
     category: "social",
     type: "freelance",
-    notes: null,
+    email: null,
+    notes: "Platform only — no direct email",
     url: "https://www.freelancer.com/jobs/virtual-assistant/",
     initials: "FL",
     avatarBg: "#eff6ff",
@@ -776,6 +795,7 @@ const JOBS = [
     location: "Melbourne",
     category: "board",
     type: null,
+    email: null,
     notes: "Direct to founders",
     url: "https://wellfound.com/location/melbourne",
     initials: "WF",
@@ -789,6 +809,7 @@ const JOBS = [
     location: "Australia",
     category: "board",
     type: null,
+    email: null,
     notes: "Curated remote roles",
     url: "https://dailyremote.com/remote-jobs-in-australia",
     initials: "DR",
@@ -802,6 +823,7 @@ const JOBS = [
     location: "Melbourne",
     category: "board",
     type: null,
+    email: null,
     notes: "Direct company links",
     url: "https://www.remoterocketship.com/city/melbourne/",
     initials: "RR",
@@ -815,6 +837,7 @@ const JOBS = [
     location: "Remote",
     category: "board",
     type: null,
+    email: null,
     notes: "Tech companies",
     url: "https://builtinmelbourne.com/jobs/remote",
     initials: "BM",
@@ -828,6 +851,7 @@ const JOBS = [
     location: "Remote",
     category: "board",
     type: null,
+    email: null,
     notes: "Freelance direct",
     url: "https://www.upwork.com/freelance-jobs/australia/",
     initials: "UW",
@@ -915,6 +939,9 @@ function buildCard(job) {
       </span>
       <span class="badge ${CAT_BADGE[job.category]}">${CAT_LABELS[job.category]}</span>
       ${job.type ? `<span class="badge ${TYPE_BADGE[job.type]}">${TYPE_LABELS[job.type]}</span>` : ""}
+      ${job.category !== "board" ? (job.email
+        ? `<span class="email-dot ready">✉ Ready</span>`
+        : `<span class="email-dot needed">✉ Needs Email</span>`) : ""}
     </div>
     ${job.notes ? `<div class="card-notes"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>${job.notes}</div>` : ""}
     <div class="card-footer">
@@ -923,9 +950,9 @@ function buildCard(job) {
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
         ${isApplied ? "Applied" : "Mark Applied"}
       </button>
-      <button class="btn btn-send-cv" data-id="${job.id}">
+      <button class="btn btn-send-cv ${job.email ? "" : "no-email"}" data-id="${job.id}" title="${job.email ? "Send CV to " + job.email : "Add email first"}">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-        Send CV
+        ${job.email ? "Send CV" : "Add Email"}
       </button>
       <a href="${job.url}" target="_blank" rel="noopener noreferrer" class="btn btn-apply">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
@@ -1086,15 +1113,14 @@ let activeJob = null;
 function openModal(job) {
   activeJob = job;
   document.getElementById("modal-job-label").textContent =
-    job.category !== "board"
-      ? `${job.role} @ ${job.company}`
-      : "Sending from genecarloai@gmail.com";
-  document.getElementById("modal-to").value = "";
+    job.category !== "board" ? `${job.role} @ ${job.company}` : "Sending from genecarloai@gmail.com";
+  document.getElementById("modal-to").value = job.email || "";
   document.getElementById("modal-msg").value = "";
   document.getElementById("modal-status").textContent = "";
   document.getElementById("modal-status").className = "modal-status";
   document.getElementById("send-modal").classList.add("open");
-  setTimeout(() => document.getElementById("modal-to").focus(), 150);
+  const toField = document.getElementById("modal-to");
+  setTimeout(() => { toField.focus(); if (job.email) toField.select(); }, 150);
 }
 
 function closeModal() {
