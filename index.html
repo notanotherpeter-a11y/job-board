@@ -365,6 +365,52 @@
     .applied-badge svg { width: 10px; height: 10px; stroke: #fff; }
     .job-card.applied .applied-badge { display: flex; }
 
+    /* ── Send CV Modal ── */
+    .modal-overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.45);
+      z-index: 200;
+      display: flex; align-items: center; justify-content: center;
+      padding: 20px;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.2s;
+    }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+    .modal {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 24px;
+      width: 100%;
+      max-width: 480px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+      transform: translateY(12px);
+      transition: transform 0.2s;
+    }
+    .modal-overlay.open .modal { transform: translateY(0); }
+    .modal-title { font-size: 16px; font-weight: 800; color: var(--text); margin-bottom: 4px; }
+    .modal-sub { font-size: 12px; color: var(--text-muted); margin-bottom: 20px; }
+    .modal-field { margin-bottom: 14px; }
+    .modal-label { font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 6px; display: block; }
+    .modal-input, .modal-textarea {
+      width: 100%; padding: 10px 12px;
+      border: 1.5px solid var(--border); border-radius: var(--radius-sm);
+      font-family: inherit; font-size: 13px; color: var(--text);
+      background: var(--bg); outline: none; transition: border-color 0.15s;
+    }
+    .modal-input:focus, .modal-textarea:focus { border-color: var(--accent); }
+    .modal-textarea { resize: vertical; min-height: 90px; }
+    .modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; }
+    .modal-status { font-size: 12px; font-weight: 600; margin-top: 10px; text-align: center; min-height: 18px; }
+    .modal-status.ok { color: var(--green); }
+    .modal-status.err { color: var(--accent); }
+    .btn-send { background: var(--accent); color: #fff; }
+    .btn-send:hover { background: #a93226; }
+    .btn-send:disabled { opacity: 0.6; cursor: not-allowed; }
+    .btn-cancel { background: #f3f4f6; color: var(--text-muted); border: 1.5px solid var(--border); }
+    .btn-send-cv { background: #ede9fe; color: #7c3aed; border: 1.5px solid #ddd6fe; }
+    .btn-send-cv:hover { background: #ddd6fe; }
+    .btn-send-cv svg { stroke: #7c3aed; }
+
     /* ── Empty State ── */
     .empty-state {
       grid-column: 1 / -1;
@@ -559,6 +605,30 @@
 <div class="grid-section">
   <p class="results-info" id="results-info"></p>
   <div class="job-grid" id="job-grid"></div>
+</div>
+
+<!-- Send CV Modal -->
+<div class="modal-overlay" id="send-modal">
+  <div class="modal">
+    <div class="modal-title">Send CV & Cover Letter</div>
+    <div class="modal-sub" id="modal-job-label">Sending from genecarloai@gmail.com</div>
+    <div class="modal-field">
+      <label class="modal-label">Recipient Email *</label>
+      <input class="modal-input" type="email" id="modal-to" placeholder="hiring@company.com" />
+    </div>
+    <div class="modal-field">
+      <label class="modal-label">Personal Note (optional)</label>
+      <textarea class="modal-textarea" id="modal-msg" placeholder="Add a personal message…"></textarea>
+    </div>
+    <div class="modal-status" id="modal-status"></div>
+    <div class="modal-actions">
+      <button class="btn btn-cancel" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-send" id="modal-send-btn" onclick="sendCV()">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        Send
+      </button>
+    </div>
+  </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
@@ -853,6 +923,10 @@ function buildCard(job) {
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
         ${isApplied ? "Applied" : "Mark Applied"}
       </button>
+      <button class="btn btn-send-cv" data-id="${job.id}">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        Send CV
+      </button>
       <a href="${job.url}" target="_blank" rel="noopener noreferrer" class="btn btn-apply">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
         Apply
@@ -861,6 +935,7 @@ function buildCard(job) {
   `;
 
   card.querySelector(".btn-mark").addEventListener("click", () => toggleApplied(job));
+  card.querySelector(".btn-send-cv").addEventListener("click", () => openModal(job));
   return card;
 }
 
@@ -938,6 +1013,71 @@ document.querySelectorAll("#type-tabs .filter-tab").forEach(tab => {
 
 // Search
 document.getElementById("search").addEventListener("input", render);
+
+// ── Send CV Modal ──
+let activeJob = null;
+
+function openModal(job) {
+  activeJob = job;
+  document.getElementById("modal-job-label").textContent =
+    job.category !== "board"
+      ? `${job.role} @ ${job.company}`
+      : "Sending from genecarloai@gmail.com";
+  document.getElementById("modal-to").value = "";
+  document.getElementById("modal-msg").value = "";
+  document.getElementById("modal-status").textContent = "";
+  document.getElementById("modal-status").className = "modal-status";
+  document.getElementById("send-modal").classList.add("open");
+  setTimeout(() => document.getElementById("modal-to").focus(), 150);
+}
+
+function closeModal() {
+  document.getElementById("send-modal").classList.remove("open");
+  activeJob = null;
+}
+
+async function sendCV() {
+  const to = document.getElementById("modal-to").value.trim();
+  const msg = document.getElementById("modal-msg").value.trim();
+  const statusEl = document.getElementById("modal-status");
+  const btn = document.getElementById("modal-send-btn");
+
+  if (!to) { statusEl.textContent = "Please enter a recipient email."; statusEl.className = "modal-status err"; return; }
+
+  btn.disabled = true;
+  btn.textContent = "Sending…";
+  statusEl.textContent = "";
+
+  try {
+    const res = await fetch("/api/send-cv", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        to,
+        company: activeJob?.company,
+        role: activeJob?.role,
+        message: msg || null,
+      }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || "Send failed");
+    statusEl.textContent = "✓ Sent successfully!";
+    statusEl.className = "modal-status ok";
+    if (activeJob) { applied.add(activeJob.id); saveApplied(activeJob); render(); }
+    setTimeout(closeModal, 1800);
+  } catch (err) {
+    statusEl.textContent = "✗ " + err.message;
+    statusEl.className = "modal-status err";
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Send`;
+  }
+}
+
+// Close modal on overlay click
+document.getElementById("send-modal").addEventListener("click", function(e) {
+  if (e.target === this) closeModal();
+});
 
 // Init — load from Supabase then render
 render(); // immediate render from localStorage
