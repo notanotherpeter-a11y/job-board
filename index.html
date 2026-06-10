@@ -13,21 +13,31 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg: #f0f2f7;
+      --bg: #f1f3f8;
       --card: #ffffff;
-      --text: #1a1d2e;
-      --text-muted: #6b7280;
+      --text: #0d1117;
+      --text-muted: #64748b;
+      --text-light: #94a3b8;
       --accent: #c0392b;
-      --accent-light: #fdf2f1;
+      --accent-light: #fff1f0;
+      --accent-dark: #9b2335;
       --blue: #2563eb;
       --blue-light: #eff6ff;
-      --green: #16a34a;
-      --green-light: #f0fdf4;
-      --border: #e5e7eb;
-      --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
-      --shadow-hover: 0 4px 16px rgba(0,0,0,0.10), 0 2px 6px rgba(0,0,0,0.06);
-      --radius: 12px;
-      --radius-sm: 8px;
+      --green: #059669;
+      --green-light: #ecfdf5;
+      --purple: #7c3aed;
+      --purple-light: #f5f3ff;
+      --amber: #d97706;
+      --amber-light: #fffbeb;
+      --border: #e2e8f0;
+      --border-light: #f1f5f9;
+      --shadow-xs: 0 1px 2px rgba(0,0,0,0.05);
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
+      --shadow-lg: 0 10px 30px rgba(0,0,0,0.10), 0 4px 8px rgba(0,0,0,0.05);
+      --radius: 14px;
+      --radius-sm: 9px;
+      --radius-xs: 6px;
     }
 
     body {
@@ -655,8 +665,8 @@ const JOBS = [
     location: "Melbourne / Sydney / Remote",
     category: "ai",
     type: "fulltime",
-    email: null,
-    notes: "Add email to apply directly",
+    email: "tick@nuai.ai",
+    notes: "Direct to CEO Tick Jiang",
     url: "https://wellfound.com/jobs/1861609-ai-research-scientist-engineer",
     initials: "NU",
     avatarBg: "#fde8e6",
@@ -664,62 +674,48 @@ const JOBS = [
   },
   {
     id: 2,
+    company: "Maincode",
+    role: "AI Software Engineer",
+    location: "Melbourne (Hybrid)",
+    category: "ai",
+    type: "fulltime",
+    email: "hello@maincode.com",
+    notes: "Builders of Matilda — AU's first LLM. $71K–$150K",
+    url: "https://jobs.ashbyhq.com/maincode",
+    initials: "MC",
+    avatarBg: "#fde8e6",
+    avatarColor: "#c0392b",
+  },
+  {
+    id: 3,
+    company: "Adaptify SEO",
+    role: "AI-Native Full-Stack Engineer",
+    location: "Fully Remote",
+    category: "ai",
+    type: "fulltime",
+    email: null,
+    notes: "AI-powered SEO startup. Apply via direct form",
+    url: "https://www.adaptify.ai/jobs/vibe-coder",
+    initials: "AD",
+    avatarBg: "#fde8e6",
+    avatarColor: "#c0392b",
+  },
+  {
+    id: 4,
     company: "Various Startups",
     role: "Associate AI Engineer",
     location: "Melbourne Remote",
     category: "ai",
     type: "fulltime",
     email: null,
-    notes: "$87K – $105K AUD",
+    notes: "$87K – $105K AUD. Browse then email direct",
     url: "https://wellfound.com/role/l/ai-engineer/melbourne",
     initials: "VS",
     avatarBg: "#fde8e6",
     avatarColor: "#c0392b",
   },
   {
-    id: 3,
-    company: "Startup",
-    role: "AI-Native Full-Stack Engineer",
-    location: "Remote",
-    category: "ai",
-    type: "fulltime",
-    email: null,
-    notes: "Add email to apply directly",
-    url: "https://wellfound.com/jobs/4157851-passionate-ai-native-full-stack-middleware-engineer",
-    initials: "ST",
-    avatarBg: "#fde8e6",
-    avatarColor: "#c0392b",
-  },
-  {
-    id: 4,
-    company: "Multiple",
-    role: "Remote AI Engineer",
-    location: "Remote",
-    category: "ai",
-    type: "fulltime",
-    email: null,
-    notes: "130K+ listings — find direct email",
-    url: "https://wellfound.com/role/r/ai-engineer",
-    initials: "ML",
-    avatarBg: "#fde8e6",
-    avatarColor: "#c0392b",
-  },
-  {
     id: 5,
-    company: "Multiple",
-    role: "Remote Full Stack Engineer",
-    location: "Remote",
-    category: "ai",
-    type: "fulltime",
-    email: null,
-    notes: "Find direct email to apply",
-    url: "https://wellfound.com/role/r/full-stack-engineer",
-    initials: "ML",
-    avatarBg: "#fde8e6",
-    avatarColor: "#c0392b",
-  },
-  {
-    id: 6,
     company: "Upwork Client",
     role: "AI Agent Developer — Social Media Automation",
     location: "Freelance Remote",
@@ -733,16 +729,30 @@ const JOBS = [
     avatarColor: "#c0392b",
   },
   {
-    id: 7,
+    id: 6,
     company: "Virtual Coworker",
     role: "Social Media VA — Digital Marketing Agency AU",
-    location: "Part-time Melbourne",
+    location: "Part-time WFH Melbourne",
     category: "social",
     type: "parttime",
     email: "apply@virtualcoworker.com",
-    notes: "Home-based, part-time",
+    notes: "Home-based, part-time. Email confirmed.",
     url: "https://revopscareers.com/job/virtual-coworker-social-media-virtual-assistant-for-a-digital-marketing-agency-in-australia-home-based-part-time-melbourne-victoria-australia/",
     initials: "VC",
+    avatarBg: "#eff6ff",
+    avatarColor: "#2563eb",
+  },
+  {
+    id: 7,
+    company: "Who in the Zoo",
+    role: "Social Media Manager",
+    location: "Hybrid / Flexible AU",
+    category: "social",
+    type: "fulltime",
+    email: "amelia@whointhezoo.com.au",
+    notes: "Specialist digital recruiter. Direct to Amelia.",
+    url: "https://www.whointhezoo.com.au/social-media-jobs",
+    initials: "WZ",
     avatarBg: "#eff6ff",
     avatarColor: "#2563eb",
   },
@@ -753,8 +763,8 @@ const JOBS = [
     location: "Remote",
     category: "social",
     type: "fulltime",
-    email: null,
-    notes: "Find direct email to apply",
+    email: "customerservice@virtualvocations.com",
+    notes: "Email re: Social Media role inquiry",
     url: "https://www.virtualvocations.com/q-remote-social-media-assistant-jobs.html",
     initials: "VV",
     avatarBg: "#eff6ff",
@@ -782,7 +792,7 @@ const JOBS = [
     category: "social",
     type: "freelance",
     email: null,
-    notes: "Platform only — no direct email",
+    notes: "Platform only — bid on projects",
     url: "https://www.freelancer.com/jobs/virtual-assistant/",
     initials: "FL",
     avatarBg: "#eff6ff",
@@ -796,7 +806,7 @@ const JOBS = [
     category: "board",
     type: null,
     email: null,
-    notes: "Direct to founders",
+    notes: "Browse then contact founders directly",
     url: "https://wellfound.com/location/melbourne",
     initials: "WF",
     avatarBg: "#f0fdf4",
@@ -809,8 +819,8 @@ const JOBS = [
     location: "Australia",
     category: "board",
     type: null,
-    email: null,
-    notes: "Curated remote roles",
+    email: "contact+jobseekers@dailyremote.com",
+    notes: "Curated remote roles. Not on Seek/Indeed.",
     url: "https://dailyremote.com/remote-jobs-in-australia",
     initials: "DR",
     avatarBg: "#f0fdf4",
@@ -824,7 +834,7 @@ const JOBS = [
     category: "board",
     type: null,
     email: null,
-    notes: "Direct company links",
+    notes: "40K+ remote jobs. Browse + apply direct.",
     url: "https://www.remoterocketship.com/city/melbourne/",
     initials: "RR",
     avatarBg: "#f0fdf4",
@@ -838,7 +848,7 @@ const JOBS = [
     category: "board",
     type: null,
     email: null,
-    notes: "Tech companies",
+    notes: "Tech companies — Airwallex, CrowdStrike etc.",
     url: "https://builtinmelbourne.com/jobs/remote",
     initials: "BM",
     avatarBg: "#f0fdf4",
@@ -852,7 +862,7 @@ const JOBS = [
     category: "board",
     type: null,
     email: null,
-    notes: "Freelance direct",
+    notes: "Freelance gigs — direct client contact",
     url: "https://www.upwork.com/freelance-jobs/australia/",
     initials: "UW",
     avatarBg: "#f0fdf4",
