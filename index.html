@@ -560,7 +560,13 @@
   <div class="job-grid" id="job-grid"></div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
+// ── Supabase ──
+const SUPA_URL = "https://xbexlequkxyomskwzrzn.supabase.co";
+const SUPA_KEY = "sb_publishable_oib8mYKYPVneP-Rn1FuiKw_6a3Lok_G";
+const db = supabase.createClient(SUPA_URL, SUPA_KEY);
+
 const JOBS = [
   {
     id: 1,
@@ -764,11 +770,40 @@ const CAT_BADGE   = { ai: "badge-cat-ai", social: "badge-cat-social", board: "ba
 const TYPE_LABELS = { fulltime: "Full Time", parttime: "Part Time", freelance: "Freelance" };
 const TYPE_BADGE  = { fulltime: "badge-type-fulltime", parttime: "badge-type-parttime", freelance: "badge-type-freelance" };
 
-// Load applied state from localStorage
+// ── Applied State (Supabase + localStorage fallback) ──
 let applied = new Set(JSON.parse(localStorage.getItem("kr_applied") || "[]"));
 
-function saveApplied() {
+async function loadApplied() {
+  try {
+    const { data, error } = await db.from("applications").select("job_id");
+    if (error) throw error;
+    applied = new Set(data.map(r => r.job_id));
+    localStorage.setItem("kr_applied", JSON.stringify([...applied]));
+    render();
+  } catch (e) {
+    console.warn("Supabase load failed, using localStorage:", e.message);
+  }
+}
+
+async function saveApplied(job) {
+  const isApplied = applied.has(job.id);
   localStorage.setItem("kr_applied", JSON.stringify([...applied]));
+  try {
+    if (isApplied) {
+      await db.from("applications").insert({
+        job_id: job.id,
+        company: job.company,
+        role: job.role,
+        url: job.url,
+        type: job.type || null,
+        category: job.category,
+      });
+    } else {
+      await db.from("applications").delete().eq("job_id", job.id);
+    }
+  } catch (e) {
+    console.warn("Supabase save failed:", e.message);
+  }
 }
 
 function updateStats(visible) {
@@ -824,7 +859,7 @@ function buildCard(job) {
     </div>
   `;
 
-  card.querySelector(".btn-mark").addEventListener("click", () => toggleApplied(job.id));
+  card.querySelector(".btn-mark").addEventListener("click", () => toggleApplied(job));
   return card;
 }
 
@@ -872,14 +907,14 @@ function render() {
   updateStats(filtered);
 }
 
-function toggleApplied(id) {
-  if (applied.has(id)) {
-    applied.delete(id);
+function toggleApplied(job) {
+  if (applied.has(job.id)) {
+    applied.delete(job.id);
   } else {
-    applied.add(id);
+    applied.add(job.id);
   }
-  saveApplied();
   render();
+  saveApplied(job);
 }
 
 // Category filter tabs
@@ -903,8 +938,9 @@ document.querySelectorAll("#type-tabs .filter-tab").forEach(tab => {
 // Search
 document.getElementById("search").addEventListener("input", render);
 
-// Init
-render();
+// Init — load from Supabase then render
+render(); // immediate render from localStorage
+loadApplied(); // then sync from Supabase
 </script>
 </body>
 </html>
