@@ -6,9 +6,8 @@
   <title>Gene Carlo's Job Board</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -35,6 +34,7 @@
       --shadow-sm: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
       --shadow-md: 0 4px 12px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
       --shadow-lg: 0 10px 30px rgba(0,0,0,0.10), 0 4px 8px rgba(0,0,0,0.05);
+      --shadow-xl: 0 20px 50px rgba(0,0,0,0.13), 0 8px 16px rgba(0,0,0,0.06);
       --radius: 14px;
       --radius-sm: 9px;
       --radius-xs: 6px;
@@ -49,12 +49,12 @@
 
     /* ── Header ── */
     header {
-      background: var(--card);
-      border-bottom: 1px solid var(--border);
+      background: #0d1117;
       padding: 0 24px;
       position: sticky;
       top: 0;
       z-index: 100;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
     }
     .header-inner {
       max-width: 1200px;
@@ -62,7 +62,7 @@
       display: flex;
       align-items: center;
       gap: 16px;
-      height: 64px;
+      height: 60px;
     }
     .logo {
       display: flex;
@@ -71,23 +71,119 @@
       flex-shrink: 0;
     }
     .logo-icon {
-      width: 36px;
-      height: 36px;
+      width: 32px;
+      height: 32px;
       background: var(--accent);
-      border-radius: 9px;
+      border-radius: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #fff;
     }
-    .logo-icon svg { width: 18px; height: 18px; stroke: #fff; stroke-width: 2.5; }
+    .logo-icon svg { width: 16px; height: 16px; stroke: #fff; stroke-width: 2.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
     .logo-text {
-      font-size: 16px;
-      font-weight: 800;
-      color: var(--text);
-      letter-spacing: -0.3px;
+      font-size: 15px;
+      font-weight: 700;
+      color: #f1f5f9;
+      letter-spacing: -0.2px;
     }
     .logo-text span { color: var(--accent); }
+    .header-spacer { flex: 1; }
+    .header-meta {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      color: #64748b;
+    }
+    .header-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 0 2px rgba(5,150,105,0.25);
+    }
+
+    /* ── Hero / Profile ── */
+    .hero {
+      background: #0d1117;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      padding: 28px 24px 0;
+    }
+    .hero-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+    }
+    .hero-avatar {
+      width: 64px;
+      height: 64px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, var(--accent) 0%, #e74c3c 100%);
+      color: #fff;
+      font-size: 22px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      letter-spacing: -1px;
+      box-shadow: 0 8px 24px rgba(192,57,43,0.35);
+    }
+    .hero-info { flex: 1; padding-bottom: 20px; }
+    .hero-name {
+      font-size: 22px;
+      font-weight: 800;
+      color: #f1f5f9;
+      letter-spacing: -0.5px;
+      margin-bottom: 4px;
+    }
+    .hero-role {
+      font-size: 13px;
+      color: #64748b;
+      font-weight: 500;
+      margin-bottom: 14px;
+    }
+    .hero-docs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .doc-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      font-weight: 700;
+      text-decoration: none;
+      border: 1px solid transparent;
+      transition: all 0.15s;
+      font-family: inherit;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .doc-btn svg { width: 12px; height: 12px; stroke: currentColor; flex-shrink: 0; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+    .doc-btn.cv {
+      background: rgba(124,58,237,0.15);
+      border-color: rgba(124,58,237,0.3);
+      color: #a78bfa;
+    }
+    .doc-btn.cv:hover { background: rgba(124,58,237,0.25); }
+    .doc-btn.cl {
+      background: rgba(37,99,235,0.15);
+      border-color: rgba(37,99,235,0.3);
+      color: #93c5fd;
+    }
+    .doc-btn.cl:hover { background: rgba(37,99,235,0.25); }
+    .doc-btn.web {
+      background: rgba(255,255,255,0.05);
+      border-color: rgba(255,255,255,0.1);
+      color: #94a3b8;
+    }
+    .doc-btn.web:hover { background: rgba(255,255,255,0.1); color: #f1f5f9; }
 
     /* ── Stats Bar ── */
     .stats-section {
@@ -97,30 +193,28 @@
     .stats-inner {
       max-width: 1200px;
       margin: 0 auto;
-      padding: 16px 24px;
+      padding: 0 24px;
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
     }
     .stat-card {
       display: flex;
       align-items: center;
       gap: 12px;
-      padding: 14px 16px;
-      background: var(--bg);
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--border);
+      padding: 18px 20px;
+      border-right: 1px solid var(--border);
     }
+    .stat-card:last-child { border-right: none; }
     .stat-icon {
-      width: 36px;
-      height: 36px;
-      border-radius: 8px;
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
     }
-    .stat-icon svg { width: 16px; height: 16px; }
+    .stat-icon svg { width: 16px; height: 16px; fill: none; stroke-linecap: round; stroke-linejoin: round; }
     .stat-icon.total { background: #f3f4f6; }
     .stat-icon.total svg { stroke: #374151; }
     .stat-icon.ai { background: var(--accent-light); }
@@ -130,16 +224,16 @@
     .stat-icon.applied { background: var(--green-light); }
     .stat-icon.applied svg { stroke: var(--green); }
     .stat-info { display: flex; flex-direction: column; }
-    .stat-number { font-size: 22px; font-weight: 800; color: var(--text); line-height: 1; }
-    .stat-label { font-size: 12px; color: var(--text-muted); font-weight: 500; margin-top: 2px; }
+    .stat-number { font-size: 24px; font-weight: 800; color: var(--text); line-height: 1; letter-spacing: -0.5px; }
+    .stat-label { font-size: 11.5px; color: var(--text-muted); font-weight: 500; margin-top: 3px; }
 
     /* ── Controls ── */
     .controls-section {
       max-width: 1200px;
       margin: 0 auto;
-      padding: 24px 24px 0;
+      padding: 20px 24px 0;
       display: flex;
-      gap: 12px;
+      gap: 10px;
       align-items: center;
       flex-wrap: wrap;
     }
@@ -153,34 +247,39 @@
       left: 12px;
       top: 50%;
       transform: translateY(-50%);
-      width: 16px;
-      height: 16px;
+      width: 15px;
+      height: 15px;
       stroke: var(--text-muted);
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      pointer-events: none;
     }
     .search-input {
       width: 100%;
-      padding: 10px 12px 10px 38px;
-      border: 1px solid var(--border);
+      padding: 10px 12px 10px 36px;
+      border: 1.5px solid var(--border);
       border-radius: var(--radius-sm);
       background: var(--card);
       font-family: inherit;
-      font-size: 14px;
+      font-size: 13.5px;
       color: var(--text);
       outline: none;
-      transition: border-color 0.15s;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      box-shadow: var(--shadow-xs);
     }
-    .search-input:focus { border-color: var(--accent); }
+    .search-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(192,57,43,0.08); }
     .search-input::placeholder { color: #9ca3af; }
 
     .filter-tabs {
       display: flex;
-      gap: 6px;
+      gap: 5px;
       flex-wrap: wrap;
     }
     .filter-tab {
-      padding: 8px 16px;
+      padding: 8px 15px;
       border-radius: 20px;
-      font-size: 13px;
+      font-size: 12.5px;
       font-weight: 600;
       border: 1.5px solid var(--border);
       background: var(--card);
@@ -188,27 +287,29 @@
       cursor: pointer;
       transition: all 0.15s;
       white-space: nowrap;
+      font-family: inherit;
     }
     .filter-tab:hover { border-color: var(--accent); color: var(--accent); }
-    .filter-tab.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .filter-tab.active { background: var(--text); border-color: var(--text); color: #fff; }
     .filter-tab.active-applied { background: var(--green); border-color: var(--green); color: #fff; }
 
     /* ── Grid ── */
     .grid-section {
       max-width: 1200px;
       margin: 0 auto;
-      padding: 20px 24px 40px;
+      padding: 20px 24px 48px;
     }
     .results-info {
-      font-size: 13px;
-      color: var(--text-muted);
+      font-size: 12.5px;
+      color: var(--text-light);
       font-weight: 500;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
+      letter-spacing: 0.1px;
     }
     .job-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-      gap: 16px;
+      gap: 14px;
     }
 
     /* ── Job Card ── */
@@ -219,48 +320,56 @@
       padding: 20px;
       display: flex;
       flex-direction: column;
-      gap: 14px;
-      box-shadow: var(--shadow);
-      transition: box-shadow 0.2s, border-color 0.2s, transform 0.15s;
+      gap: 13px;
+      box-shadow: var(--shadow-sm);
+      transition: box-shadow 0.2s, border-color 0.2s, transform 0.18s;
       position: relative;
       overflow: hidden;
     }
-    .job-card:hover { box-shadow: var(--shadow-hover); transform: translateY(-2px); }
-    .job-card.applied {
-      border-color: #bbf7d0;
-      background: linear-gradient(135deg, #fff 0%, #f0fdf4 100%);
+    .job-card:hover {
+      box-shadow: var(--shadow-md);
+      border-color: #c8d0dc;
+      transform: translateY(-2px);
     }
-    .job-card.applied::after {
+    .job-card.applied {
+      border-color: #a7f3d0;
+      background: linear-gradient(160deg, #fff 0%, #f0fdf9 100%);
+    }
+    .job-card.applied:hover { border-color: #6ee7b7; }
+    .job-card.applied::before {
       content: '';
       position: absolute;
       top: 0; left: 0;
-      width: 4px; height: 100%;
+      width: 3px; height: 100%;
       background: var(--green);
       border-radius: 4px 0 0 4px;
     }
+
     .card-header {
       display: flex;
       align-items: flex-start;
       gap: 12px;
     }
     .company-avatar {
-      width: 42px;
-      height: 42px;
-      border-radius: 10px;
+      width: 44px;
+      height: 44px;
+      border-radius: 11px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 800;
       flex-shrink: 0;
       letter-spacing: -0.5px;
     }
     .card-header-info { flex: 1; min-width: 0; }
     .company-name {
-      font-size: 12px;
-      font-weight: 600;
+      font-size: 11px;
+      font-weight: 700;
       color: var(--text-muted);
-      margin-bottom: 2px;
+      margin-bottom: 3px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -269,29 +378,30 @@
       font-size: 15px;
       font-weight: 700;
       color: var(--text);
-      line-height: 1.3;
+      line-height: 1.35;
+      letter-spacing: -0.2px;
     }
     .card-badges {
       display: flex;
-      gap: 6px;
+      gap: 5px;
       flex-wrap: wrap;
       align-items: center;
     }
     .badge {
-      padding: 3px 10px;
+      padding: 3px 9px;
       border-radius: 20px;
       font-size: 11px;
       font-weight: 700;
-      letter-spacing: 0.2px;
+      letter-spacing: 0.1px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
     }
     .badge-location {
       background: #f3f4f6;
       color: #374151;
-      display: flex;
-      align-items: center;
-      gap: 4px;
     }
-    .badge-location svg { width: 10px; height: 10px; stroke: #6b7280; }
+    .badge-location svg { width: 10px; height: 10px; stroke: #6b7280; fill: none; stroke-linecap: round; stroke-linejoin: round; }
     .badge-cat-ai { background: var(--accent-light); color: var(--accent); }
     .badge-cat-social { background: var(--blue-light); color: var(--blue); }
     .badge-cat-board { background: var(--green-light); color: var(--green); }
@@ -299,23 +409,32 @@
     .badge-type-parttime  { background: #fff7ed; color: #c2410c; }
     .badge-type-freelance { background: #fef9c3; color: #92400e; }
 
+    .email-dot {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 10.5px; font-weight: 700; padding: 3px 9px;
+      border-radius: 20px;
+    }
+    .email-dot.ready { background: #f0fdf4; color: #16a34a; }
+    .email-dot.needed { background: #fef9c3; color: #92400e; }
+
     .card-notes {
       font-size: 12.5px;
       color: var(--text-muted);
       font-weight: 500;
       display: flex;
-      align-items: center;
-      gap: 5px;
+      align-items: flex-start;
+      gap: 6px;
+      line-height: 1.5;
     }
-    .card-notes svg { width: 13px; height: 13px; stroke: var(--text-muted); flex-shrink: 0; }
+    .card-notes svg { width: 13px; height: 13px; stroke: var(--text-light); fill: none; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; margin-top: 1px; }
 
     .card-footer {
       display: flex;
-      gap: 8px;
+      gap: 7px;
       align-items: center;
       margin-top: auto;
-      padding-top: 2px;
-      border-top: 1px solid #f3f4f6;
+      padding-top: 12px;
+      border-top: 1px solid var(--border-light);
     }
     .card-date {
       font-size: 11px;
@@ -324,43 +443,53 @@
       flex: 1;
     }
     .btn {
-      padding: 8px 14px;
-      border-radius: 8px;
-      font-size: 13px;
+      padding: 8px 13px;
+      border-radius: var(--radius-sm);
+      font-size: 12.5px;
       font-weight: 700;
       cursor: pointer;
       border: none;
-      display: flex;
+      display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
       transition: all 0.15s;
       font-family: inherit;
       white-space: nowrap;
+      text-decoration: none;
     }
-    .btn svg { width: 13px; height: 13px; }
+    .btn svg { width: 12px; height: 12px; fill: none; stroke-linecap: round; stroke-linejoin: round; }
     .btn-apply {
-      background: var(--accent);
+      background: var(--text);
       color: #fff;
     }
-    .btn-apply:hover { background: #a93226; }
+    .btn-apply:hover { background: #1e293b; }
     .btn-apply svg { stroke: #fff; }
     .btn-mark {
-      background: #f3f4f6;
+      background: transparent;
       color: var(--text-muted);
       border: 1.5px solid var(--border);
     }
-    .btn-mark:hover { background: var(--green-light); color: var(--green); border-color: #bbf7d0; }
+    .btn-mark:hover { background: var(--green-light); color: var(--green); border-color: #a7f3d0; }
     .btn-mark svg { stroke: currentColor; }
     .btn-mark.marked {
       background: var(--green-light);
       color: var(--green);
-      border-color: #bbf7d0;
+      border-color: #a7f3d0;
     }
+    .btn-send-cv {
+      background: var(--purple-light);
+      color: var(--purple);
+      border: 1.5px solid #ddd6fe;
+    }
+    .btn-send-cv:hover { background: #ddd6fe; }
+    .btn-send-cv svg { stroke: var(--purple); }
+    .btn-send-cv.no-email { background: #f9fafb; color: #9ca3af; border-color: #e5e7eb; }
+    .btn-send-cv.no-email svg { stroke: #9ca3af; }
 
     .applied-badge {
       position: absolute;
-      top: 14px;
-      right: 14px;
+      top: 13px;
+      right: 13px;
       background: var(--green);
       color: #fff;
       font-size: 10px;
@@ -372,13 +501,15 @@
       gap: 4px;
       letter-spacing: 0.3px;
     }
-    .applied-badge svg { width: 10px; height: 10px; stroke: #fff; }
+    .applied-badge svg { width: 10px; height: 10px; stroke: #fff; fill: none; stroke-linecap: round; stroke-linejoin: round; }
     .job-card.applied .applied-badge { display: flex; }
 
-    /* ── Send CV Modal ── */
+    /* ── Modal ── */
     .modal-overlay {
       position: fixed; inset: 0;
-      background: rgba(0,0,0,0.45);
+      background: rgba(0,0,0,0.5);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
       z-index: 200;
       display: flex; align-items: center; justify-content: center;
       padding: 20px;
@@ -389,130 +520,122 @@
     .modal {
       background: var(--card);
       border-radius: var(--radius);
-      padding: 24px;
+      padding: 28px;
       width: 100%;
-      max-width: 480px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
-      transform: translateY(12px);
-      transition: transform 0.2s;
+      max-width: 460px;
+      box-shadow: var(--shadow-xl);
+      border: 1px solid var(--border);
+      transform: translateY(16px) scale(0.98);
+      transition: transform 0.22s cubic-bezier(0.34,1.56,0.64,1);
     }
-    .modal-overlay.open .modal { transform: translateY(0); }
-    .modal-title { font-size: 16px; font-weight: 800; color: var(--text); margin-bottom: 4px; }
-    .modal-sub { font-size: 12px; color: var(--text-muted); margin-bottom: 20px; }
+    .modal-overlay.open .modal { transform: translateY(0) scale(1); }
+    .modal-header { margin-bottom: 16px; }
+    .modal-title {
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 4px;
+      letter-spacing: -0.3px;
+    }
+    .modal-sub {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+    .modal-divider { height: 1px; background: var(--border-light); margin-bottom: 18px; }
     .modal-field { margin-bottom: 14px; }
-    .modal-label { font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 6px; display: block; }
-    .modal-input, .modal-textarea {
-      width: 100%; padding: 10px 12px;
-      border: 1.5px solid var(--border); border-radius: var(--radius-sm);
-      font-family: inherit; font-size: 13px; color: var(--text);
-      background: var(--bg); outline: none; transition: border-color 0.15s;
+    .modal-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 6px;
+      display: block;
+      letter-spacing: 0.1px;
     }
-    .modal-input:focus, .modal-textarea:focus { border-color: var(--accent); }
-    .modal-textarea { resize: vertical; min-height: 90px; }
-    .modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; }
-    .modal-status { font-size: 12px; font-weight: 600; margin-top: 10px; text-align: center; min-height: 18px; }
+    .modal-input, .modal-textarea {
+      width: 100%;
+      padding: 10px 13px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-family: inherit;
+      font-size: 13.5px;
+      color: var(--text);
+      background: #fafbfc;
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .modal-input:focus, .modal-textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(192,57,43,0.08);
+      background: #fff;
+    }
+    .modal-textarea { resize: vertical; min-height: 100px; line-height: 1.6; }
+    .modal-status {
+      font-size: 12.5px;
+      font-weight: 600;
+      margin-top: 12px;
+      text-align: center;
+      min-height: 18px;
+    }
     .modal-status.ok { color: var(--green); }
     .modal-status.err { color: var(--accent); }
-    .btn-send { background: var(--accent); color: #fff; }
-    .btn-send:hover { background: #a93226; }
-    .btn-send:disabled { opacity: 0.6; cursor: not-allowed; }
-    .btn-cancel { background: #f3f4f6; color: var(--text-muted); border: 1.5px solid var(--border); }
-    .btn-send-cv { background: #ede9fe; color: #7c3aed; border: 1.5px solid #ddd6fe; }
-    .btn-send-cv:hover { background: #ddd6fe; }
-    .btn-send-cv svg { stroke: #7c3aed; }
-    .btn-send-cv.no-email { background: #f3f4f6; color: #9ca3af; border-color: #e5e7eb; }
-    .btn-send-cv.no-email svg { stroke: #9ca3af; }
-    .email-dot {
-      display: inline-flex; align-items: center; gap: 4px;
-      font-size: 10px; font-weight: 700; padding: 2px 8px;
-      border-radius: 20px;
+    .modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 20px; }
+    .btn-send {
+      background: var(--accent);
+      color: #fff;
+      padding: 10px 20px;
+      font-size: 13.5px;
+      border: none;
     }
-    .email-dot.ready { background: #f0fdf4; color: #16a34a; }
-    .email-dot.needed { background: #fef9c3; color: #92400e; }
+    .btn-send:hover { background: var(--accent-dark); }
+    .btn-send:disabled { opacity: 0.6; cursor: not-allowed; }
+    .btn-send svg { stroke: #fff; }
+    .btn-cancel {
+      background: #f3f4f6;
+      color: var(--text-muted);
+      border: 1.5px solid var(--border);
+      padding: 10px 16px;
+      font-size: 13.5px;
+    }
+    .btn-cancel:hover { background: #e5e7eb; }
 
     /* ── Empty State ── */
     .empty-state {
       grid-column: 1 / -1;
       text-align: center;
       padding: 60px 20px;
-      color: var(--text-muted);
     }
-    .empty-state svg { width: 40px; height: 40px; stroke: #d1d5db; margin-bottom: 12px; }
-    .empty-state p { font-size: 15px; font-weight: 600; }
-    .empty-state span { font-size: 13px; }
-
-    /* ── Profile Bar ── */
-    .profile-section {
-      background: var(--card);
-      border-bottom: 1px solid var(--border);
+    .empty-state-icon {
+      width: 52px; height: 52px;
+      border-radius: 14px;
+      background: #f3f4f6;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 14px;
     }
-    .profile-inner {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 14px 24px;
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      flex-wrap: wrap;
-    }
-    .profile-avatar {
-      width: 42px;
-      height: 42px;
-      border-radius: 50%;
-      background: var(--accent);
-      color: #fff;
-      font-size: 15px;
-      font-weight: 800;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-    .profile-info { flex: 1; }
-    .profile-name { font-size: 14px; font-weight: 700; color: var(--text); }
-    .profile-title { font-size: 12px; color: var(--text-muted); font-weight: 500; }
-    .profile-docs { display: flex; gap: 8px; flex-wrap: wrap; }
-    .doc-btn {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      padding: 7px 14px;
-      border-radius: 8px;
-      font-size: 12px;
-      font-weight: 700;
-      text-decoration: none;
-      border: 1.5px solid var(--border);
-      background: var(--bg);
-      color: var(--text-muted);
-      transition: all 0.15s;
-      font-family: inherit;
-      cursor: pointer;
-      white-space: nowrap;
-    }
-    .doc-btn svg { width: 13px; height: 13px; stroke: currentColor; flex-shrink: 0; }
-    .doc-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-light); }
-    .doc-btn.cv { border-color: #7c3aed; color: #7c3aed; background: #ede9fe; }
-    .doc-btn.cv:hover { background: #ddd6fe; }
-    .doc-btn.cl { border-color: var(--blue); color: var(--blue); background: var(--blue-light); }
-    .doc-btn.cl:hover { background: #dbeafe; }
+    .empty-state-icon svg { width: 22px; height: 22px; stroke: #9ca3af; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+    .empty-state p { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+    .empty-state span { font-size: 13px; color: var(--text-muted); }
 
     /* ── Responsive ── */
-    @media (max-width: 700px) {
+    @media (max-width: 800px) {
       .stats-inner { grid-template-columns: repeat(2, 1fr); }
+      .stat-card:nth-child(2) { border-right: none; }
+      .stat-card:nth-child(3) { border-top: 1px solid var(--border); }
+      .stat-card:nth-child(4) { border-top: 1px solid var(--border); }
+    }
+    @media (max-width: 700px) {
       .job-grid { grid-template-columns: 1fr; }
-      .header-inner { gap: 10px; }
-      .controls-section { gap: 10px; }
-      .filter-tabs { gap: 5px; }
-      .filter-tab { padding: 7px 12px; font-size: 12px; }
-      .profile-inner { gap: 12px; }
-      .profile-docs { gap: 6px; }
-      .doc-btn { padding: 6px 10px; font-size: 11px; }
+      .hero-inner { gap: 14px; }
+      .hero-avatar { width: 52px; height: 52px; font-size: 18px; border-radius: 13px; }
+      .hero-name { font-size: 18px; }
     }
     @media (max-width: 420px) {
-      .stats-inner { grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 12px 16px; }
       .controls-section { padding: 16px 16px 0; }
       .grid-section { padding: 16px 16px 32px; }
       header { padding: 0 16px; }
+      .hero { padding: 20px 16px 0; }
+      .stats-inner { padding: 0 16px; }
+      .filter-tab { padding: 7px 12px; font-size: 12px; }
     }
   </style>
 </head>
@@ -523,34 +646,39 @@
   <div class="header-inner">
     <div class="logo">
       <div class="logo-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+        <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
       </div>
       <span class="logo-text">Gene Carlo's <span>Job Board</span></span>
+    </div>
+    <div class="header-spacer"></div>
+    <div class="header-meta">
+      <div class="header-dot"></div>
+      Live
     </div>
   </div>
 </header>
 
-<!-- Profile Bar -->
-<div class="profile-section">
-  <div class="profile-inner">
-    <div class="profile-avatar">GC</div>
-    <div class="profile-info">
-      <div class="profile-name">Gene Carlo Gallardo</div>
-      <div class="profile-title">AI Engineer · Sales & Marketing · Social Media Strategist</div>
-    </div>
-    <div class="profile-docs">
-      <a class="doc-btn cv" href="CV.pdf" target="_blank" rel="noopener noreferrer">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-        View CV
-      </a>
-      <a class="doc-btn cl" href="Cover_Letter.pdf" target="_blank" rel="noopener noreferrer">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-        Cover Letter
-      </a>
-      <a class="doc-btn" href="https://gene-carlo.com" target="_blank" rel="noopener noreferrer">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-        Portfolio
-      </a>
+<!-- Hero / Profile -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-avatar">GC</div>
+    <div class="hero-info">
+      <div class="hero-name">Gene Carlo Gallardo</div>
+      <div class="hero-role">AI Engineer &nbsp;&middot;&nbsp; Sales &amp; Marketing &nbsp;&middot;&nbsp; Social Media Strategist</div>
+      <div class="hero-docs">
+        <a class="doc-btn cv" href="CV.pdf" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          View CV
+        </a>
+        <a class="doc-btn cl" href="Cover_Letter.pdf" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          Cover Letter
+        </a>
+        <a class="doc-btn web" href="https://gene-carlo.com" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          Portfolio
+        </a>
+      </div>
     </div>
   </div>
 </div>
@@ -560,7 +688,7 @@
   <div class="stats-inner">
     <div class="stat-card">
       <div class="stat-icon total">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
       </div>
       <div class="stat-info">
         <span class="stat-number" id="stat-total">0</span>
@@ -569,7 +697,7 @@
     </div>
     <div class="stat-card">
       <div class="stat-icon ai">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+        <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
       </div>
       <div class="stat-info">
         <span class="stat-number" id="stat-ai">0</span>
@@ -578,7 +706,7 @@
     </div>
     <div class="stat-card">
       <div class="stat-icon social">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
       </div>
       <div class="stat-info">
         <span class="stat-number" id="stat-social">0</span>
@@ -587,7 +715,7 @@
     </div>
     <div class="stat-card">
       <div class="stat-icon applied">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
       </div>
       <div class="stat-info">
         <span class="stat-number" id="stat-applied">0</span>
@@ -600,8 +728,8 @@
 <!-- Controls -->
 <div class="controls-section">
   <div class="search-wrap">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-    <input class="search-input" type="text" id="search" placeholder="Search roles or companies…" />
+    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input class="search-input" type="text" id="search" placeholder="Search roles, companies, locations…" />
   </div>
   <div class="filter-tabs" id="cat-tabs">
     <button class="filter-tab active" data-filter="all">All</button>
@@ -629,28 +757,30 @@
 <!-- Send CV Modal -->
 <div class="modal-overlay" id="send-modal">
   <div class="modal">
-    <div class="modal-title">Send CV & Cover Letter</div>
-    <div class="modal-sub" id="modal-job-label">Sending from genecarloai@gmail.com</div>
+    <div class="modal-header">
+      <div class="modal-title">Send CV &amp; Cover Letter</div>
+      <div class="modal-sub" id="modal-job-label">Sending from genecarloai@gmail.com</div>
+    </div>
+    <div class="modal-divider"></div>
     <div class="modal-field">
-      <label class="modal-label">Recipient Email *</label>
-      <input class="modal-input" type="email" id="modal-to" placeholder="hiring@company.com" />
+      <label class="modal-label" for="modal-to">Recipient Email *</label>
+      <input class="modal-input" type="email" id="modal-to" placeholder="hiring@company.com" autocomplete="off" />
     </div>
     <div class="modal-field">
-      <label class="modal-label">Personal Note (optional)</label>
-      <textarea class="modal-textarea" id="modal-msg" placeholder="Add a personal message…"></textarea>
+      <label class="modal-label" for="modal-msg">Personal Note <span style="font-weight:500;color:var(--text-muted)">(optional)</span></label>
+      <textarea class="modal-textarea" id="modal-msg" placeholder="Leave blank to use the default persuasive cover message…"></textarea>
     </div>
     <div class="modal-status" id="modal-status"></div>
     <div class="modal-actions">
       <button class="btn btn-cancel" onclick="closeModal()">Cancel</button>
       <button class="btn btn-send" id="modal-send-btn" onclick="sendCV()">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-        Send
+        <svg viewBox="0 0 24 24" style="fill:none;stroke:#fff;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;width:13px;height:13px"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        Send Application
       </button>
     </div>
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
 // ── Supabase ──
 const SUPA_URL = "https://xbexlequkxyomskwzrzn.supabase.co";
@@ -665,8 +795,8 @@ const JOBS = [
     location: "Melbourne / Sydney / Remote",
     category: "ai",
     type: "fulltime",
-    email: "tick@nuai.ai",
-    notes: "Direct to CEO Tick Jiang",
+    email: null,
+    notes: "Direct application email needed",
     url: "https://wellfound.com/jobs/1861609-ai-research-scientist-engineer",
     initials: "NU",
     avatarBg: "#fde8e6",
@@ -674,85 +804,85 @@ const JOBS = [
   },
   {
     id: 2,
-    company: "Maincode",
-    role: "AI Software Engineer",
-    location: "Melbourne (Hybrid)",
-    category: "ai",
-    type: "fulltime",
-    email: "hello@maincode.com",
-    notes: "Builders of Matilda — AU's first LLM. $71K–$150K",
-    url: "https://jobs.ashbyhq.com/maincode",
-    initials: "MC",
-    avatarBg: "#fde8e6",
-    avatarColor: "#c0392b",
-  },
-  {
-    id: 3,
-    company: "Adaptify SEO",
-    role: "AI-Native Full-Stack Engineer",
-    location: "Fully Remote",
-    category: "ai",
-    type: "fulltime",
-    email: null,
-    notes: "AI-powered SEO startup. Apply via direct form",
-    url: "https://www.adaptify.ai/jobs/vibe-coder",
-    initials: "AD",
-    avatarBg: "#fde8e6",
-    avatarColor: "#c0392b",
-  },
-  {
-    id: 4,
     company: "Various Startups",
     role: "Associate AI Engineer",
-    location: "Melbourne Remote",
+    location: "Melbourne / Remote",
     category: "ai",
     type: "fulltime",
     email: null,
-    notes: "$87K – $105K AUD. Browse then email direct",
+    notes: "$87K – $105K AUD",
     url: "https://wellfound.com/role/l/ai-engineer/melbourne",
     initials: "VS",
     avatarBg: "#fde8e6",
     avatarColor: "#c0392b",
   },
   {
+    id: 3,
+    company: "Startup",
+    role: "AI-Native Full-Stack Engineer",
+    location: "Remote",
+    category: "ai",
+    type: "fulltime",
+    email: null,
+    notes: "Direct application email needed",
+    url: "https://wellfound.com/jobs/4157851-passionate-ai-native-full-stack-middleware-engineer",
+    initials: "ST",
+    avatarBg: "#fde8e6",
+    avatarColor: "#c0392b",
+  },
+  {
+    id: 4,
+    company: "Multiple",
+    role: "Remote AI Engineer",
+    location: "Remote",
+    category: "ai",
+    type: "fulltime",
+    email: null,
+    notes: "130K+ listings — researching direct email",
+    url: "https://wellfound.com/role/r/ai-engineer",
+    initials: "ML",
+    avatarBg: "#fde8e6",
+    avatarColor: "#c0392b",
+  },
+  {
     id: 5,
+    company: "Multiple",
+    role: "Remote Full Stack Engineer",
+    location: "Remote",
+    category: "ai",
+    type: "fulltime",
+    email: null,
+    notes: "Researching direct hiring email",
+    url: "https://wellfound.com/role/r/full-stack-engineer",
+    initials: "ML",
+    avatarBg: "#fde8e6",
+    avatarColor: "#c0392b",
+  },
+  {
+    id: 6,
     company: "Upwork Client",
     role: "AI Agent Developer — Social Media Automation",
-    location: "Freelance Remote",
+    location: "Freelance / Remote",
     category: "ai",
     type: "freelance",
     email: null,
-    notes: "Lead management automation",
+    notes: "Lead management automation project",
     url: "https://www.upwork.com/freelance-jobs/apply/Agent-Developer-Needed-Social-Media-Automation-Lead-Management_~022003072440250569177/",
     initials: "UP",
     avatarBg: "#fde8e6",
     avatarColor: "#c0392b",
   },
   {
-    id: 6,
+    id: 7,
     company: "Virtual Coworker",
     role: "Social Media VA — Digital Marketing Agency AU",
-    location: "Part-time WFH Melbourne",
+    location: "Part-time · Melbourne",
     category: "social",
     type: "parttime",
     email: "apply@virtualcoworker.com",
-    notes: "Home-based, part-time. Email confirmed.",
+    notes: "Home-based part-time role",
     url: "https://revopscareers.com/job/virtual-coworker-social-media-virtual-assistant-for-a-digital-marketing-agency-in-australia-home-based-part-time-melbourne-victoria-australia/",
     initials: "VC",
-    avatarBg: "#eff6ff",
-    avatarColor: "#2563eb",
-  },
-  {
-    id: 7,
-    company: "Who in the Zoo",
-    role: "Social Media Manager",
-    location: "Hybrid / Flexible AU",
-    category: "social",
-    type: "fulltime",
-    email: "amelia@whointhezoo.com.au",
-    notes: "Specialist digital recruiter. Direct to Amelia.",
-    url: "https://www.whointhezoo.com.au/social-media-jobs",
-    initials: "WZ",
     avatarBg: "#eff6ff",
     avatarColor: "#2563eb",
   },
@@ -763,8 +893,8 @@ const JOBS = [
     location: "Remote",
     category: "social",
     type: "fulltime",
-    email: "customerservice@virtualvocations.com",
-    notes: "Email re: Social Media role inquiry",
+    email: null,
+    notes: "Researching direct hiring email",
     url: "https://www.virtualvocations.com/q-remote-social-media-assistant-jobs.html",
     initials: "VV",
     avatarBg: "#eff6ff",
@@ -774,11 +904,11 @@ const JOBS = [
     id: 9,
     company: "Airtasker Melbourne",
     role: "Freelance VA Tasks",
-    location: "Local Melbourne",
+    location: "Local · Melbourne",
     category: "social",
     type: "freelance",
     email: null,
-    notes: "Local gigs — platform only",
+    notes: "Local gigs via platform",
     url: "https://www.airtasker.com/au/jobs/virtual-assistant/melbourne/",
     initials: "AT",
     avatarBg: "#eff6ff",
@@ -792,7 +922,7 @@ const JOBS = [
     category: "social",
     type: "freelance",
     email: null,
-    notes: "Platform only — bid on projects",
+    notes: "Platform only — no direct email",
     url: "https://www.freelancer.com/jobs/virtual-assistant/",
     initials: "FL",
     avatarBg: "#eff6ff",
@@ -806,7 +936,7 @@ const JOBS = [
     category: "board",
     type: null,
     email: null,
-    notes: "Browse then contact founders directly",
+    notes: "Direct-to-founders listings",
     url: "https://wellfound.com/location/melbourne",
     initials: "WF",
     avatarBg: "#f0fdf4",
@@ -819,8 +949,8 @@ const JOBS = [
     location: "Australia",
     category: "board",
     type: null,
-    email: "contact+jobseekers@dailyremote.com",
-    notes: "Curated remote roles. Not on Seek/Indeed.",
+    email: null,
+    notes: "Curated remote roles",
     url: "https://dailyremote.com/remote-jobs-in-australia",
     initials: "DR",
     avatarBg: "#f0fdf4",
@@ -834,7 +964,7 @@ const JOBS = [
     category: "board",
     type: null,
     email: null,
-    notes: "40K+ remote jobs. Browse + apply direct.",
+    notes: "Direct company links",
     url: "https://www.remoterocketship.com/city/melbourne/",
     initials: "RR",
     avatarBg: "#f0fdf4",
@@ -848,7 +978,7 @@ const JOBS = [
     category: "board",
     type: null,
     email: null,
-    notes: "Tech companies — Airwallex, CrowdStrike etc.",
+    notes: "Tech companies hub",
     url: "https://builtinmelbourne.com/jobs/remote",
     initials: "BM",
     avatarBg: "#f0fdf4",
@@ -862,7 +992,7 @@ const JOBS = [
     category: "board",
     type: null,
     email: null,
-    notes: "Freelance gigs — direct client contact",
+    notes: "Freelance direct projects",
     url: "https://www.upwork.com/freelance-jobs/australia/",
     initials: "UW",
     avatarBg: "#f0fdf4",
@@ -875,7 +1005,7 @@ const CAT_BADGE   = { ai: "badge-cat-ai", social: "badge-cat-social", board: "ba
 const TYPE_LABELS = { fulltime: "Full Time", parttime: "Part Time", freelance: "Freelance" };
 const TYPE_BADGE  = { fulltime: "badge-type-fulltime", parttime: "badge-type-parttime", freelance: "badge-type-freelance" };
 
-// ── Applied State (Supabase + localStorage fallback) ──
+// ── Applied State ──
 let applied = new Set(JSON.parse(localStorage.getItem("kr_applied") || "[]"));
 
 async function loadApplied() {
@@ -911,17 +1041,11 @@ async function saveApplied(job) {
   }
 }
 
-function updateStats(visible) {
-  const totalEl   = document.getElementById("stat-total");
-  const aiEl      = document.getElementById("stat-ai");
-  const socialEl  = document.getElementById("stat-social");
-  const appliedEl = document.getElementById("stat-applied");
-
-  // Count from ALL jobs (not filtered), except total shows visible count
-  totalEl.textContent   = JOBS.length;
-  aiEl.textContent      = JOBS.filter(j => j.category === "ai").length;
-  socialEl.textContent  = JOBS.filter(j => j.category === "social").length;
-  appliedEl.textContent = applied.size;
+function updateStats() {
+  document.getElementById("stat-total").textContent   = JOBS.length;
+  document.getElementById("stat-ai").textContent      = JOBS.filter(j => j.category === "ai").length;
+  document.getElementById("stat-social").textContent  = JOBS.filter(j => j.category === "social").length;
+  document.getElementById("stat-applied").textContent = applied.size;
 }
 
 function buildCard(job) {
@@ -932,7 +1056,7 @@ function buildCard(job) {
 
   card.innerHTML = `
     <div class="applied-badge">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
       Applied
     </div>
     <div class="card-header">
@@ -944,29 +1068,29 @@ function buildCard(job) {
     </div>
     <div class="card-badges">
       <span class="badge badge-location">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
         ${job.location}
       </span>
       <span class="badge ${CAT_BADGE[job.category]}">${CAT_LABELS[job.category]}</span>
       ${job.type ? `<span class="badge ${TYPE_BADGE[job.type]}">${TYPE_LABELS[job.type]}</span>` : ""}
       ${job.category !== "board" ? (job.email
-        ? `<span class="email-dot ready">✉ Ready</span>`
-        : `<span class="email-dot needed">✉ Needs Email</span>`) : ""}
+        ? `<span class="email-dot ready">&#10003; Ready</span>`
+        : `<span class="email-dot needed">&#9888; Needs Email</span>`) : ""}
     </div>
-    ${job.notes ? `<div class="card-notes"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>${job.notes}</div>` : ""}
+    ${job.notes ? `<div class="card-notes"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>${job.notes}</div>` : ""}
     <div class="card-footer">
-      <span class="card-date">Added Jun 2026</span>
+      <span class="card-date">Jun 2026</span>
       <button class="btn btn-mark ${isApplied ? "marked" : ""}" data-id="${job.id}">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
         ${isApplied ? "Applied" : "Mark Applied"}
       </button>
-      <button class="btn btn-send-cv ${job.email ? "" : "no-email"}" data-id="${job.id}" title="${job.email ? "Send CV to " + job.email : "Add email first"}">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      <button class="btn btn-send-cv ${job.email ? "" : "no-email"}" data-id="${job.id}" title="${job.email ? "Send CV to " + job.email : "No email yet"}">
+        <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
         ${job.email ? "Send CV" : "Add Email"}
       </button>
       <a href="${job.url}" target="_blank" rel="noopener noreferrer" class="btn btn-apply">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-        Apply
+        <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        View
       </a>
     </div>
   `;
@@ -977,9 +1101,9 @@ function buildCard(job) {
 }
 
 function render() {
-  const query     = document.getElementById("search").value.trim().toLowerCase();
-  const activeTab = document.querySelector("#cat-tabs .filter-tab.active, #cat-tabs .filter-tab.active-applied");
-  const filter    = activeTab ? activeTab.dataset.filter : "all";
+  const query      = document.getElementById("search").value.trim().toLowerCase();
+  const activeTab  = document.querySelector("#cat-tabs .filter-tab.active, #cat-tabs .filter-tab.active-applied");
+  const filter     = activeTab ? activeTab.dataset.filter : "all";
   const activeType = document.querySelector("#type-tabs .filter-tab.active");
   const typeFilter = activeType ? activeType.dataset.type : "all";
 
@@ -989,12 +1113,11 @@ function render() {
       || job.company.toLowerCase().includes(query)
       || job.location.toLowerCase().includes(query);
     const matchFilter =
-      filter === "all" ? true :
+      filter === "all"     ? true :
       filter === "applied" ? applied.has(job.id) :
       job.category === filter;
     const matchType =
-      typeFilter === "all" ? true :
-      job.type === typeFilter;
+      typeFilter === "all" ? true : job.type === typeFilter;
     return matchSearch && matchFilter && matchType;
   });
 
@@ -1005,7 +1128,9 @@ function render() {
     const empty = document.createElement("div");
     empty.className = "empty-state";
     empty.innerHTML = `
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <div class="empty-state-icon">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </div>
       <p>No jobs found</p>
       <span>Try adjusting your search or filters</span>
     `;
@@ -1014,56 +1139,56 @@ function render() {
     filtered.forEach(job => grid.appendChild(buildCard(job)));
   }
 
-  const info = document.getElementById("results-info");
-  info.textContent = `Showing ${filtered.length} of ${JOBS.length} listings`;
+  document.getElementById("results-info").textContent =
+    `Showing ${filtered.length} of ${JOBS.length} listings`;
 
-  updateStats(filtered);
+  updateStats();
 }
 
 function toggleApplied(job) {
-  if (applied.has(job.id)) {
-    applied.delete(job.id);
-  } else {
-    applied.add(job.id);
-  }
+  applied.has(job.id) ? applied.delete(job.id) : applied.add(job.id);
   render();
   saveApplied(job);
 }
 
 // ── Send CV Modal ──
-let currentJob = null;
+let activeJob = null;
 
 function openModal(job) {
-  currentJob = job;
-  const label = job.category === "board"
-    ? "Sending from genecarloai@gmail.com"
-    : `Applying for: ${job.role} at ${job.company}`;
-  document.getElementById("modal-job-label").textContent = label;
-  document.getElementById("modal-to").value = "";
+  activeJob = job;
+  document.getElementById("modal-job-label").textContent =
+    job.category !== "board"
+      ? `Applying for: ${job.role} at ${job.company}`
+      : "Sending from genecarloai@gmail.com";
+  document.getElementById("modal-to").value = job.email || "";
   document.getElementById("modal-msg").value = "";
   document.getElementById("modal-status").textContent = "";
   document.getElementById("modal-status").className = "modal-status";
   document.getElementById("send-modal").classList.add("open");
-  setTimeout(() => document.getElementById("modal-to").focus(), 100);
+  const toField = document.getElementById("modal-to");
+  setTimeout(() => { toField.focus(); if (job.email) toField.select(); }, 150);
 }
 
 function closeModal() {
   document.getElementById("send-modal").classList.remove("open");
-  currentJob = null;
+  activeJob = null;
 }
 
 async function sendCV() {
-  const to  = document.getElementById("modal-to").value.trim();
-  const msg = document.getElementById("modal-msg").value.trim();
-  const btn = document.getElementById("modal-send-btn");
-  const status = document.getElementById("modal-status");
+  const to       = document.getElementById("modal-to").value.trim();
+  const msg      = document.getElementById("modal-msg").value.trim();
+  const statusEl = document.getElementById("modal-status");
+  const btn      = document.getElementById("modal-send-btn");
 
-  if (!to) { status.textContent = "Please enter a recipient email."; status.className = "modal-status err"; return; }
+  if (!to) {
+    statusEl.textContent = "Please enter a recipient email.";
+    statusEl.className = "modal-status err";
+    return;
+  }
 
   btn.disabled = true;
   btn.textContent = "Sending…";
-  status.textContent = "";
-  status.className = "modal-status";
+  statusEl.textContent = "";
 
   try {
     const res = await fetch("/api/send-cv", {
@@ -1071,30 +1196,33 @@ async function sendCV() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         to,
-        company: currentJob?.company || "",
-        role: currentJob?.role || "",
-        message: msg,
+        company: activeJob?.company,
+        role: activeJob?.role,
+        message: msg || null,
       }),
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || "Send failed");
-    status.textContent = "✓ Sent successfully!";
-    status.className = "modal-status ok";
-    if (currentJob) { applied.add(currentJob.id); saveApplied(currentJob); render(); }
-    setTimeout(closeModal, 1800);
+    statusEl.textContent = "Application sent successfully!";
+    statusEl.className = "modal-status ok";
+    if (activeJob) { applied.add(activeJob.id); saveApplied(activeJob); render(); }
+    setTimeout(closeModal, 2000);
   } catch (err) {
-    status.textContent = "✗ " + err.message;
-    status.className = "modal-status err";
+    statusEl.textContent = err.message;
+    statusEl.className = "modal-status err";
   } finally {
     btn.disabled = false;
-    btn.textContent = "Send";
+    btn.innerHTML = `<svg viewBox="0 0 24 24" style="fill:none;stroke:#fff;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;width:13px;height:13px"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Send Application`;
   }
 }
 
-// Close modal on overlay click
-document.getElementById("send-modal").addEventListener("click", e => {
-  if (e.target === document.getElementById("send-modal")) closeModal();
+// Close on overlay click
+document.getElementById("send-modal").addEventListener("click", function(e) {
+  if (e.target === this) closeModal();
 });
+
+// Close on Escape
+document.addEventListener("keydown", e => { if (e.key === "Escape") closeModal(); });
 
 // Category filter tabs
 document.querySelectorAll("#cat-tabs .filter-tab").forEach(tab => {
@@ -1117,73 +1245,9 @@ document.querySelectorAll("#type-tabs .filter-tab").forEach(tab => {
 // Search
 document.getElementById("search").addEventListener("input", render);
 
-// ── Send CV Modal ──
-let activeJob = null;
-
-function openModal(job) {
-  activeJob = job;
-  document.getElementById("modal-job-label").textContent =
-    job.category !== "board" ? `${job.role} @ ${job.company}` : "Sending from genecarloai@gmail.com";
-  document.getElementById("modal-to").value = job.email || "";
-  document.getElementById("modal-msg").value = "";
-  document.getElementById("modal-status").textContent = "";
-  document.getElementById("modal-status").className = "modal-status";
-  document.getElementById("send-modal").classList.add("open");
-  const toField = document.getElementById("modal-to");
-  setTimeout(() => { toField.focus(); if (job.email) toField.select(); }, 150);
-}
-
-function closeModal() {
-  document.getElementById("send-modal").classList.remove("open");
-  activeJob = null;
-}
-
-async function sendCV() {
-  const to = document.getElementById("modal-to").value.trim();
-  const msg = document.getElementById("modal-msg").value.trim();
-  const statusEl = document.getElementById("modal-status");
-  const btn = document.getElementById("modal-send-btn");
-
-  if (!to) { statusEl.textContent = "Please enter a recipient email."; statusEl.className = "modal-status err"; return; }
-
-  btn.disabled = true;
-  btn.textContent = "Sending…";
-  statusEl.textContent = "";
-
-  try {
-    const res = await fetch("/api/send-cv", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        to,
-        company: activeJob?.company,
-        role: activeJob?.role,
-        message: msg || null,
-      }),
-    });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || "Send failed");
-    statusEl.textContent = "✓ Sent successfully!";
-    statusEl.className = "modal-status ok";
-    if (activeJob) { applied.add(activeJob.id); saveApplied(activeJob); render(); }
-    setTimeout(closeModal, 1800);
-  } catch (err) {
-    statusEl.textContent = "✗ " + err.message;
-    statusEl.className = "modal-status err";
-  } finally {
-    btn.disabled = false;
-    btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Send`;
-  }
-}
-
-// Close modal on overlay click
-document.getElementById("send-modal").addEventListener("click", function(e) {
-  if (e.target === this) closeModal();
-});
-
-// Init — load from Supabase then render
-render(); // immediate render from localStorage
-loadApplied(); // then sync from Supabase
+// Init
+render();
+loadApplied();
 </script>
 </body>
 </html>
