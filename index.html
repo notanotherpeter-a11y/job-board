@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Kristian's Job Board</title>
+  <title>Gene Carlo's Job Board</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -284,6 +284,9 @@
     .badge-cat-ai { background: var(--accent-light); color: var(--accent); }
     .badge-cat-social { background: var(--blue-light); color: var(--blue); }
     .badge-cat-board { background: var(--green-light); color: var(--green); }
+    .badge-type-fulltime  { background: #ede9fe; color: #7c3aed; }
+    .badge-type-parttime  { background: #fff7ed; color: #c2410c; }
+    .badge-type-freelance { background: #fef9c3; color: #92400e; }
 
     .card-notes {
       font-size: 12.5px;
@@ -398,7 +401,7 @@
       <div class="logo-icon">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
       </div>
-      <span class="logo-text">Kristian's <span>Job Board</span></span>
+      <span class="logo-text">Gene Carlo's <span>Job Board</span></span>
     </div>
   </div>
 </header>
@@ -451,12 +454,20 @@
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
     <input class="search-input" type="text" id="search" placeholder="Search roles or companies…" />
   </div>
-  <div class="filter-tabs">
+  <div class="filter-tabs" id="cat-tabs">
     <button class="filter-tab active" data-filter="all">All</button>
     <button class="filter-tab" data-filter="ai">AI / Dev</button>
     <button class="filter-tab" data-filter="social">Social / VA</button>
     <button class="filter-tab" data-filter="board">Job Boards</button>
     <button class="filter-tab" data-filter="applied">Applied</button>
+  </div>
+</div>
+<div class="controls-section" style="padding-top:10px;padding-bottom:0;">
+  <div class="filter-tabs" id="type-tabs">
+    <button class="filter-tab active" data-type="all">All Types</button>
+    <button class="filter-tab" data-type="fulltime">Full Time</button>
+    <button class="filter-tab" data-type="parttime">Part Time</button>
+    <button class="filter-tab" data-type="freelance">Freelance</button>
   </div>
 </div>
 
@@ -474,6 +485,7 @@ const JOBS = [
     role: "AI Research Scientist & Engineer",
     location: "Melbourne / Sydney / Remote",
     category: "ai",
+    type: "fulltime",
     notes: null,
     url: "https://wellfound.com/jobs/1861609-ai-research-scientist-engineer",
     initials: "NU",
@@ -486,6 +498,7 @@ const JOBS = [
     role: "Associate AI Engineer",
     location: "Melbourne Remote",
     category: "ai",
+    type: "fulltime",
     notes: "$87K – $105K AUD",
     url: "https://wellfound.com/role/l/ai-engineer/melbourne",
     initials: "VS",
@@ -498,6 +511,7 @@ const JOBS = [
     role: "AI-Native Full-Stack Engineer",
     location: "Remote",
     category: "ai",
+    type: "fulltime",
     notes: null,
     url: "https://wellfound.com/jobs/4157851-passionate-ai-native-full-stack-middleware-engineer",
     initials: "ST",
@@ -510,6 +524,7 @@ const JOBS = [
     role: "Remote AI Engineer",
     location: "Remote",
     category: "ai",
+    type: "fulltime",
     notes: "130K+ listings",
     url: "https://wellfound.com/role/r/ai-engineer",
     initials: "ML",
@@ -522,6 +537,7 @@ const JOBS = [
     role: "Remote Full Stack Engineer",
     location: "Remote",
     category: "ai",
+    type: "fulltime",
     notes: null,
     url: "https://wellfound.com/role/r/full-stack-engineer",
     initials: "ML",
@@ -534,6 +550,7 @@ const JOBS = [
     role: "AI Agent Developer — Social Media Automation",
     location: "Freelance Remote",
     category: "ai",
+    type: "freelance",
     notes: "Lead management automation",
     url: "https://www.upwork.com/freelance-jobs/apply/Agent-Developer-Needed-Social-Media-Automation-Lead-Management_~022003072440250569177/",
     initials: "UP",
@@ -546,6 +563,7 @@ const JOBS = [
     role: "Social Media VA — Digital Marketing Agency AU",
     location: "Part-time Melbourne",
     category: "social",
+    type: "parttime",
     notes: "Home-based, part-time",
     url: "https://revopscareers.com/job/virtual-coworker-social-media-virtual-assistant-for-a-digital-marketing-agency-in-australia-home-based-part-time-melbourne-victoria-australia/",
     initials: "VC",
@@ -558,6 +576,7 @@ const JOBS = [
     role: "Remote Social Media Assistant",
     location: "Remote",
     category: "social",
+    type: "fulltime",
     notes: null,
     url: "https://www.virtualvocations.com/q-remote-social-media-assistant-jobs.html",
     initials: "VV",
@@ -570,6 +589,7 @@ const JOBS = [
     role: "Freelance VA Tasks",
     location: "Local Melbourne",
     category: "social",
+    type: "freelance",
     notes: "Local gigs",
     url: "https://www.airtasker.com/au/jobs/virtual-assistant/melbourne/",
     initials: "AT",
@@ -582,6 +602,7 @@ const JOBS = [
     role: "Freelance VA Projects",
     location: "Remote",
     category: "social",
+    type: "freelance",
     notes: null,
     url: "https://www.freelancer.com/jobs/virtual-assistant/",
     initials: "FL",
@@ -594,6 +615,7 @@ const JOBS = [
     role: "Melbourne Startups Board",
     location: "Melbourne",
     category: "board",
+    type: null,
     notes: "Direct to founders",
     url: "https://wellfound.com/location/melbourne",
     initials: "WF",
@@ -606,6 +628,7 @@ const JOBS = [
     role: "Australia Remote Jobs",
     location: "Australia",
     category: "board",
+    type: null,
     notes: "Curated remote roles",
     url: "https://dailyremote.com/remote-jobs-in-australia",
     initials: "DR",
@@ -618,6 +641,7 @@ const JOBS = [
     role: "Melbourne Remote Listings",
     location: "Melbourne",
     category: "board",
+    type: null,
     notes: "Direct company links",
     url: "https://www.remoterocketship.com/city/melbourne/",
     initials: "RR",
@@ -630,6 +654,7 @@ const JOBS = [
     role: "Remote Tech Company Jobs",
     location: "Remote",
     category: "board",
+    type: null,
     notes: "Tech companies",
     url: "https://builtinmelbourne.com/jobs/remote",
     initials: "BM",
@@ -642,6 +667,7 @@ const JOBS = [
     role: "AU Freelance Hub",
     location: "Remote",
     category: "board",
+    type: null,
     notes: "Freelance direct",
     url: "https://www.upwork.com/freelance-jobs/australia/",
     initials: "UW",
@@ -650,8 +676,10 @@ const JOBS = [
   },
 ];
 
-const CAT_LABELS = { ai: "AI / Dev", social: "Social / VA", board: "Job Board" };
-const CAT_BADGE  = { ai: "badge-cat-ai", social: "badge-cat-social", board: "badge-cat-board" };
+const CAT_LABELS  = { ai: "AI / Dev", social: "Social / VA", board: "Job Board" };
+const CAT_BADGE   = { ai: "badge-cat-ai", social: "badge-cat-social", board: "badge-cat-board" };
+const TYPE_LABELS = { fulltime: "Full Time", parttime: "Part Time", freelance: "Freelance" };
+const TYPE_BADGE  = { fulltime: "badge-type-fulltime", parttime: "badge-type-parttime", freelance: "badge-type-freelance" };
 
 // Load applied state from localStorage
 let applied = new Set(JSON.parse(localStorage.getItem("kr_applied") || "[]"));
@@ -697,6 +725,7 @@ function buildCard(job) {
         ${job.location}
       </span>
       <span class="badge ${CAT_BADGE[job.category]}">${CAT_LABELS[job.category]}</span>
+      ${job.type ? `<span class="badge ${TYPE_BADGE[job.type]}">${TYPE_LABELS[job.type]}</span>` : ""}
     </div>
     ${job.notes ? `<div class="card-notes"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>${job.notes}</div>` : ""}
     <div class="card-footer">
@@ -717,9 +746,11 @@ function buildCard(job) {
 }
 
 function render() {
-  const query   = document.getElementById("search").value.trim().toLowerCase();
-  const activeTab = document.querySelector(".filter-tab.active, .filter-tab.active-applied");
-  const filter  = activeTab ? activeTab.dataset.filter : "all";
+  const query     = document.getElementById("search").value.trim().toLowerCase();
+  const activeTab = document.querySelector("#cat-tabs .filter-tab.active, #cat-tabs .filter-tab.active-applied");
+  const filter    = activeTab ? activeTab.dataset.filter : "all";
+  const activeType = document.querySelector("#type-tabs .filter-tab.active");
+  const typeFilter = activeType ? activeType.dataset.type : "all";
 
   const filtered = JOBS.filter(job => {
     const matchSearch = !query
@@ -730,7 +761,10 @@ function render() {
       filter === "all" ? true :
       filter === "applied" ? applied.has(job.id) :
       job.category === filter;
-    return matchSearch && matchFilter;
+    const matchType =
+      typeFilter === "all" ? true :
+      job.type === typeFilter;
+    return matchSearch && matchFilter && matchType;
   });
 
   const grid = document.getElementById("job-grid");
@@ -765,17 +799,20 @@ function toggleApplied(id) {
   render();
 }
 
-// Filter tabs
-document.querySelectorAll(".filter-tab").forEach(tab => {
+// Category filter tabs
+document.querySelectorAll("#cat-tabs .filter-tab").forEach(tab => {
   tab.addEventListener("click", () => {
-    document.querySelectorAll(".filter-tab").forEach(t => {
-      t.classList.remove("active", "active-applied");
-    });
-    if (tab.dataset.filter === "applied") {
-      tab.classList.add("active-applied");
-    } else {
-      tab.classList.add("active");
-    }
+    document.querySelectorAll("#cat-tabs .filter-tab").forEach(t => t.classList.remove("active", "active-applied"));
+    tab.classList.add(tab.dataset.filter === "applied" ? "active-applied" : "active");
+    render();
+  });
+});
+
+// Type filter tabs
+document.querySelectorAll("#type-tabs .filter-tab").forEach(tab => {
+  tab.addEventListener("click", () => {
+    document.querySelectorAll("#type-tabs .filter-tab").forEach(t => t.classList.remove("active"));
+    tab.classList.add("active");
     render();
   });
 });
